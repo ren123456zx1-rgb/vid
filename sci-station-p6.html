@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>สถานีวิทย์ ป.6</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#05060F;
+  --glass:rgba(255,255,255,.045);
+  --glass2:rgba(255,255,255,.07);
+  --edge:rgba(255,255,255,.10);
+  --edge2:rgba(255,255,255,.18);
+  --ink:#F4F6FF;
+  --mist:#9AA3C4;
+  --iris:#8B7BFF;
+  --aqua:#38E1D8;
+  --rose:#FF6FB1;
+  --amber:#FFC46B;
+  --ok:#4CE29A;
+  --bad:#FF7285;
+  --r-lg:28px; --r-md:20px; --r-sm:14px;
+  color-scheme:dark;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 96px);}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:"IBM Plex Sans Thai","Anuphan",system-ui,sans-serif;
+  font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+h1,h2,h3,h4,.dsp{font-family:"Anuphan","IBM Plex Sans Thai",system-ui,sans-serif;font-weight:600;line-height:1.18;letter-spacing:-.015em;margin:0;}
+#sky{position:fixed;inset:0;z-index:-3;display:block;opacity:.55;}
+.glow{position:fixed;inset:-20vh -10vw;z-index:-2;pointer-events:none;filter:blur(90px);opacity:.75;
+  background:
+   radial-gradient(38vw 34vw at 14% 10%, rgba(139,123,255,.55), transparent 62%),
+   radial-gradient(34vw 30vw at 88% 4%, rgba(56,225,216,.40), transparent 62%),
+   radial-gradient(40vw 34vw at 70% 62%, rgba(255,111,177,.32), transparent 62%),
+   radial-gradient(44vw 38vw at 22% 92%, rgba(80,110,255,.35), transparent 62%);
+  animation:drift 26s ease-in-out infinite alternate;}
+@keyframes drift{to{transform:translate3d(2.5%,-2%,0) scale(1.08);}}
+.grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.5;
+  background-image:radial-gradient(rgba(255,255,255,.035) 1px,transparent 1px);background-size:3px 3px;}
+.wrap{max-width:1160px;margin:0 auto;padding:0 22px;}
+
+/* ---------- floating nav ---------- */
+.nav{position:fixed;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 14px);z-index:50;width:min(1160px,calc(100% - 28px));}
+.nav-in{display:flex;align-items:center;gap:14px;padding:9px 10px 9px 18px;
+  background:rgba(14,16,34,.62);border:1px solid var(--edge);border-radius:999px;
+  backdrop-filter:blur(22px) saturate(160%);-webkit-backdrop-filter:blur(22px) saturate(160%);
+  box-shadow:0 12px 40px rgba(0,0,0,.45);}
+.brand{display:flex;align-items:center;gap:10px;font-family:"Anuphan",sans-serif;font-weight:600;font-size:15.5px;white-space:nowrap;}
+.orb-s{width:20px;height:20px;border-radius:50%;background:conic-gradient(from 0deg,var(--aqua),var(--iris),var(--rose),var(--aqua));box-shadow:0 0 16px rgba(139,123,255,.7);animation:spin 7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.nav .rankbox{margin-left:auto;display:flex;align-items:center;gap:10px;min-width:0;}
+.rankname{font-size:13px;color:var(--mist);white-space:nowrap;}
+.xpbar{width:110px;height:6px;border-radius:999px;background:rgba(255,255,255,.1);overflow:hidden;}
+.xpfill{height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--aqua),var(--iris));transition:width .7s cubic-bezier(.2,.9,.2,1);}
+.xpnum{font-size:13px;font-weight:600;white-space:nowrap;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid var(--edge);}
+
+/* ---------- hero ---------- */
+.hero{padding:calc(env(safe-area-inset-top,0px) + 132px) 0 24px;text-align:center;position:relative;}
+.halo{position:absolute;left:50%;top:6%;width:min(620px,90vw);aspect-ratio:1;transform:translateX(-50%);z-index:-1;
+  background:conic-gradient(from 210deg,rgba(56,225,216,.22),rgba(139,123,255,.30),rgba(255,111,177,.22),rgba(56,225,216,.22));
+  filter:blur(60px);border-radius:50%;animation:spin 40s linear infinite;}
+.pill{display:inline-flex;align-items:center;gap:9px;font-size:13.5px;color:var(--mist);
+  padding:7px 16px;border-radius:999px;background:var(--glass);border:1px solid var(--edge);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
+.pill .ping{width:7px;height:7px;border-radius:50%;background:var(--aqua);box-shadow:0 0 10px var(--aqua);}
+.hero h1{font-size:clamp(38px,7.4vw,80px);font-weight:700;letter-spacing:-.035em;margin:22px 0 0;}
+.hero h1 .g{background:linear-gradient(100deg,#FFFFFF 8%,#B9AEFF 42%,#5FE7DC 78%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.hero p{color:var(--mist);max-width:56ch;margin:20px auto 30px;font-size:clamp(15px,1.9vw,17.5px);}
+.cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.btn{font-family:"Anuphan",sans-serif;font-size:15.5px;font-weight:600;cursor:pointer;letter-spacing:-.01em;
+  padding:13px 26px;border-radius:999px;border:1px solid var(--edge2);background:var(--glass2);color:var(--ink);
+  transition:transform .18s cubic-bezier(.2,.9,.2,1),background .2s,box-shadow .2s,border-color .2s;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
+.btn:hover{background:rgba(255,255,255,.13);transform:translateY(-2px);}
+.btn:active{transform:translateY(0);}
+.btn.solid{background:linear-gradient(120deg,#8B7BFF,#38E1D8);color:#080A1A;border-color:transparent;box-shadow:0 10px 30px rgba(110,130,255,.35);}
+.btn.solid:hover{box-shadow:0 14px 38px rgba(110,130,255,.5);}
+.btn.ghost{background:var(--glass);}
+.btn:focus-visible,a:focus-visible,button:focus-visible{outline:2px solid var(--aqua);outline-offset:3px;}
+.reveal{opacity:0;transform:translateY(16px) scale(.99);animation:rise .8s cubic-bezier(.2,.9,.2,1) forwards;}
+.d1{animation-delay:.05s}.d2{animation-delay:.16s}.d3{animation-delay:.27s}.d4{animation-delay:.38s}
+@keyframes rise{to{opacity:1;transform:none;}}
+
+.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:46px auto 0;}
+.strip .s{padding:18px 16px;border-radius:var(--r-md);background:var(--glass);border:1px solid var(--edge);text-align:center;
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);}
+.strip .s b{display:block;font-family:"Anuphan",sans-serif;font-size:26px;font-weight:600;
+  background:linear-gradient(120deg,#fff,#9FE9E2);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.strip .s span{font-size:12.5px;color:var(--mist);}
+
+/* ---------- sections ---------- */
+section{padding:72px 0 0;}
+.shead{margin-bottom:28px;}
+.eyebrow{font-size:13px;color:var(--aqua);margin-bottom:8px;}
+.shead h2{font-size:clamp(26px,4.2vw,40px);font-weight:600;letter-spacing:-.03em;}
+.sdesc{color:var(--mist);max-width:62ch;margin:12px 0 0;}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:16px;}
+.card{position:relative;overflow:hidden;text-align:left;cursor:pointer;color:inherit;font:inherit;
+  padding:22px 22px 20px;border-radius:var(--r-lg);border:1px solid var(--edge);
+  background:var(--glass);backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);
+  transition:transform .28s cubic-bezier(.2,.9,.2,1),border-color .25s,background .25s,box-shadow .28s;}
+.card::before{content:"";position:absolute;inset:0;border-radius:inherit;opacity:0;transition:opacity .3s;
+  background:radial-gradient(120% 90% at 50% -20%, rgba(139,123,255,.30), transparent 62%);}
+.card:hover{transform:translateY(-6px);border-color:var(--edge2);background:rgba(255,255,255,.075);box-shadow:0 22px 50px rgba(0,0,0,.45);}
+.card:hover::before{opacity:1;}
+.card:focus-visible{outline:none;border-color:var(--aqua);box-shadow:0 0 0 2px rgba(56,225,216,.5);}
+.card>*{position:relative;}
+.card .num{font-size:12px;color:var(--mist);opacity:.75;letter-spacing:.04em;}
+.card .ic{width:54px;height:54px;border-radius:18px;display:flex;align-items:center;justify-content:center;
+  font-size:27px;margin:12px 0 14px;background:linear-gradient(140deg,rgba(139,123,255,.28),rgba(56,225,216,.16));border:1px solid var(--edge);}
+.card h3{font-size:19px;margin-bottom:6px;letter-spacing:-.02em;}
+.card .sub{font-size:14px;color:var(--mist);min-height:63px;line-height:1.6;}
+.card .foot{display:flex;align-items:center;gap:9px;margin-top:16px;font-size:12px;color:var(--mist);
+  padding-top:14px;border-top:1px solid rgba(255,255,255,.07);}
+.pips{display:flex;gap:4px;}
+.pip{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.18);}
+.pip.on{background:var(--amber);box-shadow:0 0 8px rgba(255,196,107,.7);}
+.badge{margin-left:auto;font-size:11.5px;padding:3px 11px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid var(--edge);}
+.card.done{border-color:rgba(76,226,154,.35);background:rgba(76,226,154,.06);}
+.card.done .badge{color:var(--ok);border-color:rgba(76,226,154,.4);background:rgba(76,226,154,.1);}
+
+/* knowledge */
+details.kn{border:1px solid var(--edge);background:var(--glass);margin-bottom:12px;border-radius:var(--r-md);overflow:hidden;
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);}
+details.kn summary{cursor:pointer;padding:18px 22px;font-family:"Anuphan",sans-serif;font-weight:600;font-size:17px;list-style:none;display:flex;gap:12px;align-items:center;}
+details.kn summary::-webkit-details-marker{display:none;}
+details.kn summary::after{content:"";margin-left:auto;width:9px;height:9px;border-right:2px solid var(--aqua);border-bottom:2px solid var(--aqua);transform:rotate(45deg);transition:transform .25s;}
+details.kn[open] summary::after{transform:rotate(-135deg);}
+details.kn[open]{background:rgba(255,255,255,.07);}
+details.kn .body{padding:0 22px 20px;color:var(--mist);font-size:15px;}
+details.kn .body b{color:var(--ink);font-weight:600;}
+details.kn .body li{margin-bottom:7px;}
+details.kn .body ul{padding-left:20px;}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:22px;}
+.stat{border:1px solid var(--edge);background:var(--glass);padding:22px;border-radius:var(--r-md);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);}
+.stat .v{font-family:"Anuphan",sans-serif;font-size:34px;font-weight:600;line-height:1;
+  background:linear-gradient(120deg,#fff,#9FE9E2);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.stat .l{font-size:13px;color:var(--mist);margin-top:8px;}
+
+footer{margin-top:80px;border-top:1px solid rgba(255,255,255,.07);padding:30px 0 48px;color:var(--mist);font-size:13.5px;}
+
+/* ---------- modal ---------- */
+.veil{position:fixed;inset:0;z-index:60;background:rgba(4,5,15,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  display:none;overflow-y:auto;padding:calc(env(safe-area-inset-top,0px) + 18px) 16px calc(env(safe-area-inset-bottom,0px) + 48px);}
+.veil.show{display:block;animation:fade .25s ease;}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.panel{max-width:800px;margin:0 auto;border-radius:var(--r-lg);overflow:hidden;
+  background:linear-gradient(170deg,rgba(28,30,58,.94),rgba(10,11,26,.96));
+  border:1px solid var(--edge2);box-shadow:0 40px 90px rgba(0,0,0,.6);
+  animation:pop .35s cubic-bezier(.2,.9,.2,1);}
+@keyframes pop{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
+.ptop{display:flex;align-items:flex-start;gap:14px;padding:22px 24px 16px;border-bottom:1px solid rgba(255,255,255,.08);}
+.ptop h3{font-size:22px;letter-spacing:-.02em;}
+.pt-sub{font-size:13px;color:var(--mist);}
+.x{margin-left:auto;background:rgba(255,255,255,.06);border:1px solid var(--edge);color:var(--ink);
+  width:38px;height:38px;flex:0 0 38px;cursor:pointer;font-size:16px;line-height:1;border-radius:50%;transition:.2s;}
+.x:hover{background:rgba(255,114,133,.18);border-color:rgba(255,114,133,.5);color:#FFB4BE;}
+.pbody{padding:22px 24px 26px;}
+.hint{border-radius:var(--r-sm);background:rgba(255,196,107,.09);border:1px solid rgba(255,196,107,.24);
+  padding:13px 17px;font-size:14px;color:#FFDFAE;margin-bottom:20px;line-height:1.65;}
+.hint b{color:#FFC46B;}
+.prog{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--mist);margin-bottom:18px;}
+.prog .track{flex:1;height:6px;background:rgba(255,255,255,.09);border-radius:999px;overflow:hidden;}
+.prog .fill{height:100%;background:linear-gradient(90deg,var(--aqua),var(--iris));width:0;transition:width .4s;border-radius:999px;}
+
+.q{font-size:18.5px;font-family:"Anuphan",sans-serif;font-weight:600;margin-bottom:16px;line-height:1.45;}
+.opts{display:grid;gap:10px;}
+.opt{text-align:left;padding:14px 20px;border-radius:var(--r-sm);border:1px solid var(--edge);
+  background:rgba(255,255,255,.04);color:var(--ink);font:inherit;font-size:15.5px;cursor:pointer;transition:.18s;}
+.opt:hover:not(:disabled){background:rgba(255,255,255,.1);border-color:var(--edge2);transform:translateX(3px);}
+.opt:disabled{cursor:default;}
+.opt.right{border-color:rgba(76,226,154,.6);background:rgba(76,226,154,.14);}
+.opt.wrong{border-color:rgba(255,114,133,.6);background:rgba(255,114,133,.13);}
+.fb{margin-top:16px;padding:14px 18px;border-radius:var(--r-sm);border:1px solid var(--edge);background:rgba(255,255,255,.04);font-size:14.5px;line-height:1.65;}
+.fb.good{border-color:rgba(76,226,154,.35);background:rgba(76,226,154,.08);}
+.fb.miss{border-color:rgba(255,114,133,.35);background:rgba(255,114,133,.07);}
+.fb .lab{font-family:"Anuphan",sans-serif;font-weight:600;display:block;margin-bottom:4px;}
+.fb.good .lab{color:var(--ok);} .fb.miss .lab{color:var(--bad);}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;}
+.art{font-size:44px;text-align:center;margin-bottom:12px;letter-spacing:6px;}
+
+.slot{min-height:62px;border:1px dashed rgba(255,255,255,.18);border-radius:var(--r-md);padding:10px;
+  display:flex;flex-wrap:wrap;gap:9px;margin-bottom:16px;background:rgba(255,255,255,.03);align-items:center;}
+.chip{padding:10px 17px;border-radius:999px;border:1px solid var(--edge);background:rgba(255,255,255,.05);
+  color:var(--ink);font:inherit;font-size:14.5px;cursor:pointer;transition:.18s;}
+.chip:hover{background:rgba(255,255,255,.12);transform:translateY(-2px);}
+.chip.n{border-color:rgba(139,123,255,.55);background:rgba(139,123,255,.14);}
+.chip.right{border-color:rgba(76,226,154,.55);background:rgba(76,226,154,.14);}
+.chip.wrong{border-color:rgba(255,114,133,.55);background:rgba(255,114,133,.13);}
+.chip .i{color:var(--aqua);font-size:12px;margin-right:7px;font-weight:600;}
+.pool{display:flex;flex-wrap:wrap;gap:9px;}
+
+.current{text-align:center;border:1px solid var(--edge2);border-radius:var(--r-md);padding:22px;margin-bottom:16px;
+  background:linear-gradient(140deg,rgba(139,123,255,.16),rgba(56,225,216,.08));}
+.current .big{font-size:38px;}
+.current .nm{font-family:"Anuphan",sans-serif;font-size:21px;font-weight:600;}
+.buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:10px;}
+.bucket{padding:15px 12px;border-radius:var(--r-sm);border:1px solid var(--edge);background:rgba(255,255,255,.04);
+  color:var(--ink);font:inherit;font-size:14.5px;cursor:pointer;text-align:center;transition:.18s;}
+.bucket:hover{background:rgba(255,255,255,.1);transform:translateY(-3px);}
+.bucket b{display:block;font-family:"Anuphan",sans-serif;font-weight:600;}
+.bucket span{font-size:12px;color:var(--mist);}
+
+.mgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+@media(max-width:520px){.mgrid{grid-template-columns:repeat(3,1fr);}}
+.mc{aspect-ratio:3/4;border-radius:var(--r-sm);border:1px solid var(--edge);background:rgba(255,255,255,.05);
+  color:transparent;cursor:pointer;font:inherit;font-size:13px;padding:9px;display:flex;align-items:center;justify-content:center;
+  text-align:center;line-height:1.4;transition:.25s;}
+.mc::after{content:"";width:16px;height:16px;border-radius:50%;background:linear-gradient(120deg,var(--iris),var(--aqua));opacity:.6;}
+.mc:hover{background:rgba(255,255,255,.1);}
+.mc.up,.mc.got{color:var(--ink);border-color:rgba(139,123,255,.5);background:rgba(139,123,255,.14);}
+.mc.up::after,.mc.got::after{content:none;}
+.mc.got{border-color:rgba(76,226,154,.5);background:rgba(76,226,154,.1);opacity:.55;}
+
+.lab{border:1px solid var(--edge);background:rgba(255,255,255,.035);border-radius:var(--r-md);padding:18px;margin-bottom:16px;}
+.lab svg{width:100%;height:auto;display:block;}
+.ctrls{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:14px;}
+input[type=range]{accent-color:#8B7BFF;flex:1;min-width:170px;height:22px;}
+.readout{font-family:"Anuphan",sans-serif;font-size:15px;font-weight:600;color:var(--aqua);font-variant-numeric:tabular-nums;}
+.task{font-size:15.5px;margin-bottom:12px;color:var(--mist);}
+.task b{color:var(--amber);}
+.tglrow{display:flex;gap:9px;flex-wrap:wrap;}
+.tgl{padding:10px 18px;border-radius:999px;border:1px solid var(--edge);background:rgba(255,255,255,.04);
+  color:var(--ink);font:inherit;font-size:14px;cursor:pointer;transition:.18s;}
+.tgl:hover{background:rgba(255,255,255,.1);}
+.tgl.on{border-color:transparent;background:linear-gradient(120deg,rgba(139,123,255,.9),rgba(56,225,216,.85));color:#0A0C1C;font-weight:600;}
+
+.timer{font-family:"Anuphan",sans-serif;font-size:28px;font-weight:600;color:var(--amber);font-variant-numeric:tabular-nums;margin-bottom:8px;}
+.result{text-align:center;padding:20px 0;}
+.result .score{font-family:"Anuphan",sans-serif;font-size:58px;font-weight:700;line-height:1;letter-spacing:-.03em;
+  background:linear-gradient(120deg,#fff,#B9AEFF,#5FE7DC);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.result .msg{color:var(--mist);margin-top:10px;}
+.stars{font-size:30px;letter-spacing:6px;margin-top:12px;}
+
+@media(max-width:860px){
+  .strip{grid-template-columns:repeat(2,1fr);}
+  .hero{padding-top:calc(env(safe-area-inset-top,0px) + 112px);}
+  .rankname{display:none;}
+  .xpbar{width:64px;}
+}
+@media(max-width:420px){.nav-in{padding-left:14px;} .brand{font-size:14px;}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important;}.reveal{opacity:1;transform:none;}}
+</style>
+</head>
+<body>
+<canvas id="sky" aria-hidden="true"></canvas>
+<div class="glow" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<nav class="nav">
+  <div class="nav-in">
+    <div class="brand"><span class="orb-s"></span>สถานีวิทย์ ป.6</div>
+    <div class="rankbox">
+      <span class="rankname" id="rankName">นักเรียนฝึกหัด</span>
+      <div class="xpbar"><div class="xpfill" id="xpFill"></div></div>
+      <span class="xpnum" id="xpNum">0 XP</span>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+  <div class="hero">
+    <div class="halo" aria-hidden="true"></div>
+    <div class="reveal d1"><span class="pill"><span class="ping"></span>ห้องทดลองเสมือนจริง · หลักสูตรวิทยาศาสตร์ ป.6</span></div>
+    <h1 class="reveal d2">เรียนวิทย์<br><span class="g">ด้วยการลงมือเล่น</span></h1>
+    <p class="reveal d3">ต่อวงจรไฟฟ้าจริง เลื่อนดวงจันทร์ให้เกิดสุริยุปราคา จำแนกหิน แยกสาร และอีก 10 ภารกิจ ทุกเกมมีบัตรความรู้ให้อ่านก่อนและอธิบายเหตุผลทุกคำตอบ</p>
+    <div class="cta reveal d3">
+      <button class="btn solid" onclick="document.getElementById('games').scrollIntoView()">เริ่มเล่นเกม</button>
+      <button class="btn ghost" onclick="document.getElementById('know').scrollIntoView()">อ่านความรู้ก่อน</button>
+    </div>
+    <div class="strip reveal d4">
+      <div class="s"><b>14</b><span>ภารกิจให้เล่น</span></div>
+      <div class="s"><b>8</b><span>บทความรู้</span></div>
+      <div class="s"><b>80+</b><span>คำถามพร้อมเฉลย</span></div>
+      <div class="s"><b>5</b><span>ขั้นให้ไต่ระดับ</span></div>
+    </div>
+  </div>
+
+  <section id="games">
+    <div class="shead">
+      <div class="eyebrow" id="doneCount">ผ่านแล้ว 0 / 14</div>
+      <h2>เลือกภารกิจของคุณ</h2>
+      <p class="sdesc">แต่ละภารกิจใช้เวลาประมาณ 3–6 นาที จุดสีส้มบอกระดับความยาก เล่นผ่านแล้วได้ดาวและแต้มสะสมเพื่อเลื่อนขั้น</p>
+    </div>
+    <div class="grid" id="gameGrid"></div>
+  </section>
+
+  <section id="know">
+    <div class="shead">
+      <div class="eyebrow">คลังความรู้ 8 เรื่อง</div>
+      <h2>สรุปเนื้อหาก่อนลงสนาม</h2>
+      <p class="sdesc">เนื้อหาวิทยาศาสตร์ ป.6 แบบย่อ อ่านก่อนเล่นเพื่อทำคะแนนให้เต็ม หรืออ่านทบทวนหลังเล่นก็ได้</p>
+    </div>
+    <div id="knowList"></div>
+  </section>
+
+  <section id="me">
+    <div class="shead">
+      <div class="eyebrow">โปรไฟล์นักสำรวจ</div>
+      <h2>ความคืบหน้าของฉัน</h2>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="v" id="sXp">0</div><div class="l">แต้มสะสม (XP)</div></div>
+      <div class="stat"><div class="v" id="sDone">0</div><div class="l">ภารกิจที่ผ่าน</div></div>
+      <div class="stat"><div class="v" id="sStar">0</div><div class="l">ดาวที่เก็บได้</div></div>
+      <div class="stat"><div class="v" id="sRank" style="font-size:20px;line-height:1.35">นักเรียนฝึกหัด</div><div class="l">ขั้นปัจจุบัน</div></div>
+    </div>
+    <button class="btn ghost" id="resetBtn">ล้างความคืบหน้า</button>
+  </section>
+</main>
+
+<footer><div class="wrap">สถานีวิทย์ ป.6 · สื่อการเรียนรู้วิทยาศาสตร์สำหรับชั้นประถมศึกษาปีที่ 6 · ความคืบหน้าถูกบันทึกไว้ในเครื่องของคุณเท่านั้น</div></footer>
+
+<div class="veil" id="veil" role="dialog" aria-modal="true" aria-labelledby="pTitle">
+  <div class="panel">
+    <div class="ptop">
+      <div><h3 id="pTitle">–</h3><div class="pt-sub" id="pSub"></div></div>
+      <button class="x" id="closeBtn" aria-label="ปิด">✕</button>
+    </div>
+    <div class="pbody" id="pBody"></div>
+  </div>
+</div>
+
+<script>
+/* ================= starfield ================= */
+(function(){
+  var c=document.getElementById('sky'),x=c.getContext('2d'),st=[],w,h;
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function size(){w=c.width=innerWidth;h=c.height=innerHeight;st=[];
+    var n=Math.min(170,Math.round(w*h/9000));
+    for(var i=0;i<n;i++)st.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.4+.3,s:Math.random()*.16+.03,a:Math.random()});}
+  function draw(){x.clearRect(0,0,w,h);
+    for(var i=0;i<st.length;i++){var p=st[i];p.a+=0.012;
+      var o=.35+Math.abs(Math.sin(p.a))*.55;
+      x.fillStyle='rgba(190,215,255,'+o+')';x.beginPath();x.arc(p.x,p.y,p.r,0,6.3);x.fill();
+      p.y+=p.s;if(p.y>h){p.y=-2;p.x=Math.random()*w;}}
+    requestAnimationFrame(draw);}
+  size();addEventListener('resize',size);
+  if(reduce){draw=function(){};x.clearRect(0,0,w,h);for(var i=0;i<st.length;i++){var p=st[i];x.fillStyle='rgba(190,215,255,.5)';x.beginPath();x.arc(p.x,p.y,p.r,0,6.3);x.fill();}}
+  else draw();
+})();
+
+/* ================= progress ================= */
+var KEY='sci6-station-v1';
+var S={xp:0,done:{},stars:0};
+try{var raw=localStorage.getItem(KEY);if(raw){var p=JSON.parse(raw);if(p&&typeof p==='object'){S.xp=p.xp||0;S.done=p.done||{};S.stars=p.stars||0;}}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+var RANKS=[[0,'นักเรียนฝึกหัด'],[250,'นักสำรวจ'],[600,'นักทดลอง'],[1000,'นักวิทยาศาสตร์'],[1500,'ผู้บัญชาการสถานี']];
+function rank(){var r=RANKS[0],nx=RANKS[1];for(var i=0;i<RANKS.length;i++){if(S.xp>=RANKS[i][0]){r=RANKS[i];nx=RANKS[i+1]||null;}}
+  var base=r[0],top=nx?nx[0]:r[0]+1,pct=nx?Math.min(100,(S.xp-base)/(top-base)*100):100;return{name:r[1],pct:pct};}
+function paint(){
+  var r=rank();
+  document.getElementById('rankName').textContent=r.name;
+  document.getElementById('xpFill').style.width=r.pct+'%';
+  document.getElementById('xpNum').textContent=S.xp+' XP';
+  var n=Object.keys(S.done).length;
+  document.getElementById('doneCount').textContent='ผ่านแล้ว '+n+' / '+GAMES.length;
+  document.getElementById('sXp').textContent=S.xp;
+  document.getElementById('sDone').textContent=n;
+  document.getElementById('sStar').textContent=S.stars;
+  document.getElementById('sRank').textContent=r.name;
+  document.querySelectorAll('.card').forEach(function(el){
+    var id=el.dataset.id;
+    if(S.done[id]){el.classList.add('done');el.querySelector('.badge').textContent='ผ่านแล้ว ★'+S.done[id];}
+  });
+}
+
+/* ================= helpers ================= */
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+var body=document.getElementById('pBody'),veil=document.getElementById('veil');
+var activeGame=null,timerId=null;
+function openPanel(g){
+  activeGame=g;
+  document.getElementById('pTitle').textContent=g.name;
+  document.getElementById('pSub').textContent=g.topic;
+  body.innerHTML='';
+  var hint=el('div','hint','<b>ความรู้ก่อนเล่น:</b> '+g.hint);
+  body.appendChild(hint);
+  g.run(body);
+  veil.classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function closePanel(){veil.classList.remove('show');document.body.style.overflow='';if(timerId){clearInterval(timerId);timerId=null;}activeGame=null;}
+document.getElementById('closeBtn').onclick=closePanel;
+veil.addEventListener('click',function(e){if(e.target===veil)closePanel();});
+addEventListener('keydown',function(e){if(e.key==='Escape'&&veil.classList.contains('show'))closePanel();});
+
+function finish(c,g,score,max){
+  if(timerId){clearInterval(timerId);timerId=null;}
+  var pct=max?score/max:0;
+  var st=pct>=0.95?3:pct>=0.7?2:pct>=0.45?1:0;
+  var msg=st===3?'เยี่ยมมาก ทำได้เกือบเต็ม!':st===2?'เก่งแล้ว ลองอีกครั้งให้ครบทุกข้อ':st===1?'พอใช้ ลองอ่านบัตรความรู้แล้วเล่นซ้ำ':'ยังไม่ผ่าน ลองอ่านความรู้ก่อนเล่นแล้วลองใหม่';
+  var gained=0;
+  if(st>0){
+    var prev=S.done[g.id]||0;
+    if(st>prev){S.stars+=(st-prev);S.done[g.id]=st;}
+    gained=st*30+Math.round(pct*40);
+    S.xp+=gained;save();
+  }
+  c.innerHTML='';
+  var r=el('div','result');
+  r.appendChild(el('div','score',score+' / '+max));
+  r.appendChild(el('div','stars',(st>=1?'★':'☆')+(st>=2?'★':'☆')+(st>=3?'★':'☆')));
+  r.appendChild(el('div','msg',msg+(gained?'<br>ได้รับ '+gained+' XP':'')));
+  c.appendChild(r);
+  var row=el('div','row');row.style.justifyContent='center';
+  var again=el('button','btn solid','เล่นอีกครั้ง');again.onclick=function(){body.innerHTML='';body.appendChild(el('div','hint','<b>ความรู้ก่อนเล่น:</b> '+g.hint));g.run(body);};
+  var back=el('button','btn ghost','กลับหน้าหลัก');back.onclick=closePanel;
+  row.appendChild(again);row.appendChild(back);c.appendChild(row);
+  paint();
+}
+
+/* ============ ENGINE 1: quiz ============ */
+function quizEngine(c,g,qs,opt){
+  opt=opt||{};
+  var list=shuffle(qs).slice(0,opt.limit||qs.length);
+  var i=0,score=0,left=opt.seconds||0;
+  var prog=el('div','prog','<span id="qn"></span><div class="track"><div class="fill" id="qf"></div></div>');
+  c.appendChild(prog);
+  var timeEl=null;
+  if(opt.seconds){timeEl=el('div','timer');timeEl.style.textAlign='center';c.appendChild(timeEl);}
+  var stage=el('div');c.appendChild(stage);
+  function tick(){left--;timeEl.textContent='⏱ '+left+' วินาที';if(left<=0){clearInterval(timerId);timerId=null;finish(c,g,score,i);}}
+  if(opt.seconds){timeEl.textContent='⏱ '+left+' วินาที';timerId=setInterval(tick,1000);}
+  function render(){
+    if(i>=list.length){finish(c,g,score,list.length);return;}
+    var q=list[i];
+    document.getElementById('qn').textContent='ข้อ '+(i+1)+'/'+list.length;
+    document.getElementById('qf').style.width=(i/list.length*100)+'%';
+    stage.innerHTML='';
+    if(q.art)stage.appendChild(el('div','art',q.art));
+    stage.appendChild(el('div','q',q.q));
+    var wrap=el('div','opts');
+    var order=shuffle(q.o.map(function(t,k){return{t:t,k:k};}));
+    order.forEach(function(o){
+      var b=el('button','opt',o.t);
+      b.onclick=function(){
+        wrap.querySelectorAll('.opt').forEach(function(x){x.disabled=true;});
+        var ok=o.k===q.a;
+        b.classList.add(ok?'right':'wrong');
+        if(!ok){wrap.querySelectorAll('.opt').forEach(function(x,idx){if(order[idx].k===q.a)x.classList.add('right');});}
+        if(ok)score++;
+        var fb=el('div','fb '+(ok?'good':'miss'),'<span class="lab">'+(ok?'ถูกต้อง':'ยังไม่ใช่')+'</span>'+q.e);
+        stage.appendChild(fb);
+        var row=el('div','row');
+        var nb=el('button','btn solid',i===list.length-1?'ดูผลคะแนน':'ข้อต่อไป');
+        nb.onclick=function(){i++;render();};row.appendChild(nb);stage.appendChild(row);
+        nb.focus();
+      };
+      wrap.appendChild(b);
+    });
+    stage.appendChild(wrap);
+  }
+  render();
+}
+
+/* ============ ENGINE 2: sequence ============ */
+function seqEngine(c,g,prompt,items){
+  c.appendChild(el('div','task',prompt));
+  var slot=el('div','slot');c.appendChild(slot);
+  var pool=el('div','pool');c.appendChild(pool);
+  var chosen=[];
+  function draw(){
+    slot.innerHTML='';pool.innerHTML='';
+    if(!chosen.length)slot.appendChild(el('div','',' <span style="color:var(--mist);font-size:14px">แตะรายการด้านล่างเพื่อเรียงลำดับ</span>'));
+    chosen.forEach(function(t,k){
+      var b=el('button','chip n','<span class="i">'+(k+1)+'</span>'+t);
+      b.onclick=function(){chosen.splice(k,1);draw();};
+      slot.appendChild(b);
+    });
+    order.forEach(function(t){
+      if(chosen.indexOf(t)>-1)return;
+      var b=el('button','chip',t);
+      b.onclick=function(){chosen.push(t);draw();};
+      pool.appendChild(b);
+    });
+    check.disabled=chosen.length!==items.length;
+    check.style.opacity=check.disabled?.45:1;
+  }
+  var order=shuffle(items);
+  var row=el('div','row');
+  var check=el('button','btn solid','ตรวจคำตอบ');
+  var clr=el('button','btn ghost','ล้าง');
+  clr.onclick=function(){chosen=[];draw();};
+  row.appendChild(check);row.appendChild(clr);c.appendChild(row);
+  check.onclick=function(){
+    var score=0;slot.innerHTML='';
+    chosen.forEach(function(t,k){
+      var ok=items[k]===t;if(ok)score++;
+      slot.appendChild(el('div','chip '+(ok?'right':'wrong'),'<span class="i">'+(k+1)+'</span>'+t));
+    });
+    pool.innerHTML='';row.innerHTML='';
+    var ans=el('div','fb good','<span class="lab">ลำดับที่ถูกต้อง</span>'+items.map(function(t,k){return (k+1)+'. '+t;}).join('<br>'));
+    c.insertBefore(ans,row);
+    var nb=el('button','btn solid','ดูผลคะแนน');
+    nb.onclick=function(){finish(c,g,score,items.length);};
+    row.appendChild(nb);
+  };
+  draw();
+}
+
+/* ============ ENGINE 3: sort ============ */
+function sortEngine(c,g,buckets,items){
+  var list=shuffle(items),i=0,score=0;
+  var prog=el('div','prog','<span id="sn"></span><div class="track"><div class="fill" id="sf"></div></div>');
+  c.appendChild(prog);
+  var stage=el('div');c.appendChild(stage);
+  function render(){
+    if(i>=list.length){finish(c,g,score,list.length);return;}
+    var it=list[i];
+    document.getElementById('sn').textContent=(i+1)+'/'+list.length;
+    document.getElementById('sf').style.width=(i/list.length*100)+'%';
+    stage.innerHTML='';
+    var cur=el('div','current','<div class="big">'+(it.ic||'🔬')+'</div><div class="nm">'+it.n+'</div>');
+    stage.appendChild(cur);
+    var bw=el('div','buckets');
+    buckets.forEach(function(b,k){
+      var btn=el('button','bucket','<b>'+b.n+'</b><span>'+(b.d||'')+'</span>');
+      btn.onclick=function(){
+        bw.querySelectorAll('.bucket').forEach(function(x){x.disabled=true;x.style.cursor='default';});
+        var ok=k===it.b;if(ok)score++;
+        btn.style.borderColor=ok?'var(--ok)':'var(--bad)';
+        var fb=el('div','fb '+(ok?'good':'miss'),'<span class="lab">'+(ok?'ถูกต้อง':'คำตอบคือ '+buckets[it.b].n)+'</span>'+it.e);
+        stage.appendChild(fb);
+        var row=el('div','row');
+        var nb=el('button','btn solid',i===list.length-1?'ดูผลคะแนน':'ต่อไป');
+        nb.onclick=function(){i++;render();};row.appendChild(nb);stage.appendChild(row);nb.focus();
+      };
+      bw.appendChild(btn);
+    });
+    stage.appendChild(bw);
+  }
+  render();
+}
+
+/* ============ ENGINE 4: memory ============ */
+function memEngine(c,g,pairs){
+  var cards=[];
+  pairs.forEach(function(p,k){cards.push({t:p[0],id:k});cards.push({t:p[1],id:k});});
+  cards=shuffle(cards);
+  var tries=0,got=0,open=[],lock=false;
+  var info=el('div','prog','<span id="mn">จับคู่ 0/'+pairs.length+'</span><div class="track"><div class="fill" id="mf"></div></div>');
+  c.appendChild(info);
+  var grid=el('div','mgrid');c.appendChild(grid);
+  cards.forEach(function(cd,idx){
+    var b=el('button','mc',cd.t);
+    b.onclick=function(){
+      if(lock||b.classList.contains('up')||b.classList.contains('got'))return;
+      b.classList.add('up');open.push({b:b,cd:cd});
+      if(open.length===2){
+        tries++;lock=true;
+        if(open[0].cd.id===open[1].cd.id){
+          open[0].b.classList.add('got');open[1].b.classList.add('got');
+          got++;document.getElementById('mn').textContent='จับคู่ '+got+'/'+pairs.length;
+          document.getElementById('mf').style.width=(got/pairs.length*100)+'%';
+          open=[];lock=false;
+          if(got===pairs.length){
+            var perfect=pairs.length, sc=Math.max(1,Math.round(perfect*2 - (tries-perfect)*0.5));
+            setTimeout(function(){finish(c,g,Math.min(perfect*2,sc),perfect*2);},500);
+          }
+        }else{
+          setTimeout(function(){open[0].b.classList.remove('up');open[1].b.classList.remove('up');open=[];lock=false;},750);
+        }
+      }
+    };
+    grid.appendChild(b);
+  });
+}
+
+/* ================= CUSTOM GAME: circuit lab ================= */
+function circuitLab(c,g){
+  var state={mode:'series',a:true,b:true,sw:true};
+  var tasks=[
+    {t:'ทำให้หลอดไฟ <b>สว่างทั้งสองดวง</b>',ok:function(s){return lit(s).a&&lit(s).b;}},
+    {t:'ถอดหลอด A ออก แล้วทำให้ <b>หลอด B ยังสว่างอยู่</b>',ok:function(s){return !s.a&&lit(s).b;},e:'วงจรขนานแยกทางเดินไฟฟ้าของแต่ละหลอด ถอดดวงหนึ่งออกอีกดวงจึงยังสว่าง'},
+    {t:'ถอดหลอด A ออก แล้วทำให้ <b>หลอด B ดับตามไปด้วย</b>',ok:function(s){return !s.a&&!lit(s).b&&s.sw;},e:'วงจรอนุกรมมีทางเดินไฟฟ้าทางเดียว ถอดดวงใดออกวงจรก็ขาด ไฟดับหมด'},
+    {t:'ปิดสวิตช์หลัก แล้วสังเกตว่า <b>ไฟดับทั้งวงจร</b>',ok:function(s){return !s.sw&&!lit(s).a&&!lit(s).b;},e:'สวิตช์หลักอยู่บนเส้นทางร่วม เมื่อเปิดวงจรออก ไฟจึงไม่ไหลเลย'}
+  ];
+  var ti=0,score=0;
+  function lit(s){
+    if(!s.sw)return{a:false,b:false};
+    if(s.mode==='series'){var on=s.a&&s.b;return{a:on,b:on};}
+    return{a:s.a,b:s.b};
+  }
+  var taskEl=el('div','task');c.appendChild(taskEl);
+  var lab=el('div','lab');c.appendChild(lab);
+  var ctrl=el('div');c.appendChild(ctrl);
+  var fbHost=el('div');c.appendChild(fbHost);
+  function svg(){
+    var L=lit(state);
+    function bulb(x,y,on,name){
+      return '<circle cx="'+x+'" cy="'+y+'" r="20" fill="'+(on?'#FFC24B':'rgba(120,160,255,.15)')+'" stroke="'+(on?'#FFE6B4':'rgba(120,160,255,.5)')+'" stroke-width="2"/>'+
+      (on?'<circle cx="'+x+'" cy="'+y+'" r="33" fill="rgba(255,194,75,.18)"/>':'')+
+      '<text x="'+x+'" y="'+(y+5)+'" text-anchor="middle" font-size="15" fill="'+(on?'#3A2600':'#A9B6E8')+'" font-family="Bai Jamjuree">'+name+'</text>';
+    }
+    var wire='stroke="#26F0DA" stroke-width="2.5" fill="none"';
+    var brk='stroke="rgba(255,107,127,.75)" stroke-width="2.5" stroke-dasharray="5 5" fill="none"';
+    var s='<svg viewBox="0 0 480 220">';
+    s+='<rect x="30" y="92" width="50" height="36" fill="rgba(38,240,218,.15)" stroke="#26F0DA" stroke-width="2"/><text x="55" y="116" text-anchor="middle" font-size="14" fill="#26F0DA" font-family="Bai Jamjuree">ถ่าน</text>';
+    // main switch
+    s+='<path d="M80 110 H140" '+wire+'/>';
+    s+= state.sw? '<path d="M140 110 H180" '+wire+'/>' : '<path d="M140 110 L172 88" '+brk+'/>';
+    s+='<circle cx="140" cy="110" r="4" fill="#26F0DA"/><circle cx="180" cy="110" r="4" fill="#26F0DA"/>';
+    s+='<text x="160" y="140" text-anchor="middle" font-size="12" fill="#A9B6E8">สวิตช์</text>';
+    if(state.mode==='series'){
+      s+= state.a? '<path d="M180 110 H230" '+wire+'/>' : '<path d="M180 110 H230" '+brk+'/>';
+      s+=bulb(255,110,L.a,'A');
+      s+= state.b? '<path d="M280 110 H330" '+wire+'/>' : '<path d="M280 110 H330" '+brk+'/>';
+      s+=bulb(355,110,L.b,'B');
+      s+='<path d="M375 110 H440 V190 H55 V128" '+wire+'/>';
+    }else{
+      s+='<path d="M180 110 H210 V50 H240" '+wire+'/>';
+      s+= state.a? '<path d="M240 50 H250" '+wire+'/>' : '<path d="M240 50 H250" '+brk+'/>';
+      s+=bulb(280,50,L.a,'A');
+      s+='<path d="M300 50 H360 V110" '+wire+'/>';
+      s+='<path d="M210 110 V170 H240" '+wire+'/>';
+      s+= state.b? '<path d="M240 170 H250" '+wire+'/>' : '<path d="M240 170 H250" '+brk+'/>';
+      s+=bulb(280,170,L.b,'B');
+      s+='<path d="M300 170 H360 V110 H440 V200 H55 V128" '+wire+'/>';
+    }
+    s+='</svg>';
+    return s;
+  }
+  function ui(){
+    taskEl.innerHTML='ภารกิจ '+(ti+1)+'/'+tasks.length+' — '+tasks[ti].t;
+    lab.innerHTML=svg();
+    ctrl.innerHTML='';
+    var r1=el('div','tglrow');
+    [['series','ต่อแบบอนุกรม'],['parallel','ต่อแบบขนาน']].forEach(function(m){
+      var b=el('button','tgl'+(state.mode===m[0]?' on':''),m[1]);
+      b.onclick=function(){state.mode=m[0];ui();};r1.appendChild(b);
+    });
+    ctrl.appendChild(r1);
+    var r2=el('div','tglrow');r2.style.marginTop='8px';
+    [['a','หลอด A'],['b','หลอด B'],['sw','สวิตช์หลัก']].forEach(function(k){
+      var on=state[k[0]];
+      var b=el('button','tgl'+(on?' on':''),k[1]+': '+(on?(k[0]==='sw'?'ต่ออยู่':'ใส่อยู่'):(k[0]==='sw'?'เปิดวงจร':'ถอดออก')));
+      b.onclick=function(){state[k[0]]=!state[k[0]];ui();};r2.appendChild(b);
+    });
+    ctrl.appendChild(r2);
+    var row=el('div','row');
+    var ck=el('button','btn solid','ส่งคำตอบภารกิจนี้');
+    ck.onclick=function(){
+      var ok=tasks[ti].ok(state);
+      if(ok)score++;
+      fbHost.innerHTML='';
+      fbHost.appendChild(el('div','fb '+(ok?'good':'miss'),'<span class="lab">'+(ok?'สำเร็จ':'ยังไม่ตรงเงื่อนไข')+'</span>'+(tasks[ti].e||'ลองปรับวิธีต่อวงจรและสถานะของหลอดไฟให้ตรงกับภารกิจ')));
+      var r=el('div','row');
+      var nb=el('button','btn solid',ti===tasks.length-1?'ดูผลคะแนน':'ภารกิจต่อไป');
+      nb.onclick=function(){if(ti===tasks.length-1){finish(c,g,score,tasks.length);}else{ti++;fbHost.innerHTML='';ui();}};
+      r.appendChild(nb);fbHost.appendChild(r);nb.focus();
+    };
+    row.appendChild(ck);ctrl.appendChild(row);
+  }
+  ui();
+}
+
+/* ================= CUSTOM GAME: eclipse sim ================= */
+function eclipseSim(c,g){
+  var ang=90,score=0,ti=0;
+  var tasks=[
+    {t:'หมุนดวงจันทร์ไปยังตำแหน่งที่ทำให้เกิด <b>สุริยุปราคา</b>',want:'solar'},
+    {t:'หมุนดวงจันทร์ไปยังตำแหน่งที่ทำให้เกิด <b>จันทรุปราคา</b>',want:'lunar'}
+  ];
+  var taskEl=el('div','task');c.appendChild(taskEl);
+  var lab=el('div','lab');c.appendChild(lab);
+  var fbHost=el('div');c.appendChild(fbHost);
+  function pos(){var r=ang*Math.PI/180;return{x:330+95*Math.cos(r),y:120+26*Math.sin(r)};}
+  function status(){var cs=Math.cos(ang*Math.PI/180);if(cs<-0.975)return'solar';if(cs>0.975)return'lunar';return'none';}
+  function draw(){
+    var p=pos(),st=status();
+    var s='<svg viewBox="0 0 460 240">';
+    s+='<line x1="70" y1="120" x2="440" y2="120" stroke="rgba(255,194,75,.25)" stroke-dasharray="4 6"/>';
+    s+='<circle cx="55" cy="120" r="34" fill="#FFC24B"/><circle cx="55" cy="120" r="48" fill="rgba(255,194,75,.18)"/><text x="55" y="196" text-anchor="middle" fill="#FFC24B" font-size="13" font-family="Bai Jamjuree">ดวงอาทิตย์</text>';
+    s+='<ellipse cx="330" cy="120" rx="95" ry="26" fill="none" stroke="rgba(120,160,255,.3)"/>';
+    if(p.x>330) s+='<circle cx="'+p.x+'" cy="'+p.y+'" r="9" fill="#C3CCF5"/>';
+    s+='<circle cx="330" cy="120" r="24" fill="#3E7BFF"/><circle cx="330" cy="120" r="24" fill="none" stroke="rgba(38,240,218,.6)"/><text x="330" y="196" text-anchor="middle" fill="#A9B6E8" font-size="13" font-family="Bai Jamjuree">โลก</text>';
+    if(p.x<=330) s+='<circle cx="'+p.x+'" cy="'+p.y+'" r="9" fill="#EAF0FF"/>';
+    if(st==='solar')s+='<path d="M235 120 L330 106 L330 134 Z" fill="rgba(0,0,0,.45)"/>';
+    if(st==='lunar')s+='<path d="M354 108 L440 96 L440 144 L354 132 Z" fill="rgba(0,0,0,.45)"/>';
+    s+='</svg>';
+    lab.innerHTML=s;
+    lab.appendChild(ctrls);
+    read.textContent= st==='solar'?'ขณะนี้: สุริยุปราคา (ดวงจันทร์บังดวงอาทิตย์)': st==='lunar'?'ขณะนี้: จันทรุปราคา (เงาโลกบังดวงจันทร์)':'ขณะนี้: ยังไม่เกิดอุปราคา';
+    read.style.color= st==='none'?'var(--mist)':'var(--solar)';
+  }
+  var ctrls=el('div','ctrls');
+  var sl=el('input');sl.type='range';sl.min=0;sl.max=359;sl.value=ang;sl.setAttribute('aria-label','ตำแหน่งดวงจันทร์');
+  var read=el('div','readout');
+  sl.oninput=function(){ang=+sl.value;draw();};
+  ctrls.appendChild(sl);ctrls.appendChild(read);
+  function ui(){
+    taskEl.innerHTML='ภารกิจ '+(ti+1)+'/'+tasks.length+' — '+tasks[ti].t;
+    draw();
+  }
+  var row=el('div','row');
+  var ck=el('button','btn solid','ส่งคำตอบ');
+  ck.onclick=function(){
+    var ok=status()===tasks[ti].want;if(ok)score++;
+    fbHost.innerHTML='';
+    var e= tasks[ti].want==='solar'
+      ?'สุริยุปราคาเกิดเมื่อ ดวงอาทิตย์ – ดวงจันทร์ – โลก เรียงกันเป็นเส้นตรง ดวงจันทร์อยู่ตรงกลางและทอดเงาลงบนโลก เกิดในวันแรม 15 ค่ำ (จันทร์ดับ)'
+      :'จันทรุปราคาเกิดเมื่อ ดวงอาทิตย์ – โลก – ดวงจันทร์ เรียงกันเป็นเส้นตรง โลกอยู่ตรงกลางและทอดเงาบังดวงจันทร์ เกิดในคืนวันขึ้น 15 ค่ำ (จันทร์เพ็ญ)';
+    fbHost.appendChild(el('div','fb '+(ok?'good':'miss'),'<span class="lab">'+(ok?'ถูกต้อง':'ยังไม่ใช่ตำแหน่งนี้')+'</span>'+e));
+    var r=el('div','row');
+    var nb=el('button','btn solid',ti===tasks.length-1?'ทำแบบทดสอบต่อ':'ภารกิจต่อไป');
+    nb.onclick=function(){
+      if(ti===tasks.length-1){
+        var base=score;
+        c.innerHTML='';
+        quizEngine(c,{id:g.id,hint:g.hint,name:g.name},[
+          {q:'สุริยุปราคาเกิดขึ้นในช่วงใดของวัน',o:['กลางวัน','กลางคืน','เฉพาะตอนเช้ามืด','เฉพาะตอนเที่ยงคืน'],a:0,e:'เพราะต้องมองเห็นดวงอาทิตย์จึงเกิดได้เฉพาะเวลากลางวันของบริเวณที่เงาดวงจันทร์ทอดผ่าน'},
+          {q:'จันทรุปราคาเกิดจากเงาของสิ่งใดบังดวงจันทร์',o:['เงาของโลก','เงาของดวงอาทิตย์','เงาของดาวอังคาร','เมฆหนา'],a:0,e:'โลกอยู่ระหว่างดวงอาทิตย์กับดวงจันทร์ เงาของโลกจึงทอดไปบังดวงจันทร์'},
+          {q:'ข้อใดเรียงลำดับถูกต้องเมื่อเกิดสุริยุปราคา',o:['ดวงอาทิตย์ – ดวงจันทร์ – โลก','ดวงอาทิตย์ – โลก – ดวงจันทร์','โลก – ดวงอาทิตย์ – ดวงจันทร์','ดวงจันทร์ – ดวงอาทิตย์ – โลก'],a:0,e:'ดวงจันทร์ต้องอยู่ตรงกลางจึงจะบังดวงอาทิตย์ได้'},
+          {q:'เหตุใดจึงไม่เกิดอุปราคาทุกเดือน',o:['ระนาบวงโคจรของดวงจันทร์เอียงจากระนาบวงโคจรของโลก','ดวงจันทร์หยุดโคจรบางเดือน','โลกหมุนเร็วเกินไป','ดวงอาทิตย์เคลื่อนที่หนีไป'],a:0,e:'วงโคจรดวงจันทร์เอียงประมาณ 5 องศา ทั้งสามดวงจึงเรียงตรงกันเพียงบางครั้ง'}
+        ]);
+        S.xp+=base*20;save();
+      }else{ti++;fbHost.innerHTML='';ui();}
+    };
+    r.appendChild(nb);fbHost.appendChild(r);nb.focus();
+  };
+  row.appendChild(ck);c.appendChild(row);
+  ui();
+}
+
+/* ================= CUSTOM GAME: shadow lab ================= */
+function shadowLab(c,g){
+  var OBJ=20,SCREEN=180;
+  var rounds=[60,45,90],ri=0,score=0,d=90;
+  var taskEl=el('div','task');c.appendChild(taskEl);
+  var lab=el('div','lab');c.appendChild(lab);
+  var fbHost=el('div');c.appendChild(fbHost);
+  function shadow(){return OBJ*SCREEN/d;}
+  function draw(){
+    var sh=shadow(),px=d/SCREEN*360+40,half=OBJ/2*(SCREEN/d)*2.1;
+    var s='<svg viewBox="0 0 440 220">';
+    s+='<circle cx="30" cy="110" r="14" fill="#FFC24B"/><circle cx="30" cy="110" r="24" fill="rgba(255,194,75,.2)"/>';
+    s+='<rect x="400" y="20" width="10" height="180" fill="rgba(120,160,255,.35)"/>';
+    var top=110-half,bot=110+half;
+    if(top<20)top=20;if(bot>200)bot=200;
+    s+='<path d="M30 110 L405 '+top+' L405 '+bot+' Z" fill="rgba(10,16,56,.75)"/>';
+    s+='<rect x="405" y="'+top+'" width="14" height="'+(bot-top)+'" fill="rgba(0,0,0,.6)"/>';
+    s+='<line x1="30" y1="110" x2="405" y2="'+top+'" stroke="rgba(255,194,75,.45)"/>';
+    s+='<line x1="30" y1="110" x2="405" y2="'+bot+'" stroke="rgba(255,194,75,.45)"/>';
+    s+='<rect x="'+(px-5)+'" y="99" width="10" height="22" fill="#26F0DA"/>';
+    s+='<text x="30" y="190" text-anchor="middle" font-size="12" fill="#FFC24B">ไฟฉาย</text>';
+    s+='<text x="'+px+'" y="140" text-anchor="middle" font-size="12" fill="#26F0DA">วัตถุ</text>';
+    s+='<text x="400" y="215" text-anchor="end" font-size="12" fill="#A9B6E8">ฉากรับเงา</text>';
+    s+='</svg>';
+    lab.innerHTML=s;lab.appendChild(ctrls);
+    read.textContent='ระยะ '+d+' ซม. → เงาสูง '+shadow().toFixed(1)+' ซม.';
+  }
+  var ctrls=el('div','ctrls');
+  var sl=el('input');sl.type='range';sl.min=20;sl.max=150;sl.value=d;sl.setAttribute('aria-label','ระยะจากไฟฉายถึงวัตถุ');
+  var read=el('div','readout');
+  sl.oninput=function(){d=+sl.value;draw();};
+  ctrls.appendChild(sl);ctrls.appendChild(read);
+  function ui(){
+    taskEl.innerHTML='รอบที่ '+(ri+1)+'/3 — วัตถุสูง 20 ซม. ฉากอยู่ห่างไฟฉาย 180 ซม. จงเลื่อนวัตถุให้เงาสูง <b>'+rounds[ri]+' ซม.</b> (คลาดเคลื่อนได้ ±3 ซม.)';
+    draw();
+  }
+  var row=el('div','row');
+  var ck=el('button','btn solid','ส่งคำตอบ');
+  ck.onclick=function(){
+    var target=rounds[ri],ok=Math.abs(shadow()-target)<=3;
+    if(ok)score++;
+    var need=(OBJ*SCREEN/target).toFixed(0);
+    fbHost.innerHTML='';
+    fbHost.appendChild(el('div','fb '+(ok?'good':'miss'),'<span class="lab">'+(ok?'แม่นมาก':'ยังไม่ตรงเป้า')+'</span>ยิ่งวัตถุอยู่ใกล้แหล่งกำเนิดแสง เงายิ่งใหญ่ขึ้น คำนวณได้จาก ความสูงเงา = ความสูงวัตถุ × (ระยะฉาก ÷ ระยะวัตถุ) จึงต้องวางวัตถุที่ระยะประมาณ '+need+' ซม.'));
+    var r=el('div','row');
+    var nb=el('button','btn solid',ri===2?'ดูผลคะแนน':'รอบต่อไป');
+    nb.onclick=function(){if(ri===2)finish(c,g,score,3);else{ri++;fbHost.innerHTML='';ui();}};
+    r.appendChild(nb);fbHost.appendChild(r);nb.focus();
+  };
+  row.appendChild(ck);c.appendChild(row);
+  ui();
+}
+
+/* ================= GAME DATA ================= */
+var QUIZ_MAIN=[
+ {q:'อาหารหมู่ใดให้พลังงานแก่ร่างกายมากที่สุดต่อ 1 กรัม',o:['ไขมัน','คาร์โบไฮเดรต','โปรตีน','วิตามิน'],a:0,e:'ไขมัน 1 กรัม ให้พลังงานประมาณ 9 กิโลแคลอรี ขณะที่คาร์โบไฮเดรตและโปรตีนให้ประมาณ 4 กิโลแคลอรี'},
+ {q:'อวัยวะใดดูดซึมสารอาหารเข้าสู่กระแสเลือดมากที่สุด',o:['ลำไส้เล็ก','กระเพาะอาหาร','ลำไส้ใหญ่','หลอดอาหาร'],a:0,e:'ผนังลำไส้เล็กมีวิลลัสจำนวนมาก ช่วยเพิ่มพื้นที่ผิวในการดูดซึมสารอาหาร'},
+ {q:'หัวใจห้องใดสูบฉีดเลือดไปเลี้ยงทั่วร่างกาย',o:['ห้องล่างซ้าย','ห้องล่างขวา','ห้องบนซ้าย','ห้องบนขวา'],a:0,e:'หัวใจห้องล่างซ้ายมีผนังกล้ามเนื้อหนาที่สุด เพราะต้องออกแรงดันเลือดไปทั่วร่างกาย'},
+ {q:'สารใดที่พืชใช้ในการสังเคราะห์ด้วยแสงร่วมกับน้ำ',o:['แก๊สคาร์บอนไดออกไซด์','แก๊สออกซิเจน','แก๊สไนโตรเจน','แก๊สฮีเลียม'],a:0,e:'พืชใช้น้ำและแก๊สคาร์บอนไดออกไซด์ โดยมีแสงและคลอโรฟิลล์ ได้น้ำตาลกับแก๊สออกซิเจน'},
+ {q:'การต่อหลอดไฟแบบใดที่ถอดหลอดหนึ่งออกแล้วหลอดอื่นยังสว่าง',o:['ต่อแบบขนาน','ต่อแบบอนุกรม','ต่อแบบผสม 2 หลอด','ต่อแบบเรียงแถว'],a:0,e:'วงจรขนานมีทางเดินของกระแสไฟฟ้าหลายทาง เมื่อทางหนึ่งขาด กระแสยังไหลผ่านทางอื่นได้'},
+ {q:'วัสดุใดเป็นฉนวนไฟฟ้า',o:['ยาง','ทองแดง','อะลูมิเนียม','เหล็ก'],a:0,e:'ยางไม่ยอมให้กระแสไฟฟ้าผ่าน จึงใช้หุ้มสายไฟเพื่อความปลอดภัย'},
+ {q:'หินชนิดใดเกิดจากการเย็นตัวของหินหนืด',o:['หินอัคนี','หินตะกอน','หินแปร','หินปูน'],a:0,e:'หินอัคนีเกิดจากแมกมาหรือลาวาเย็นตัวและแข็งตัว เช่น หินแกรนิต หินบะซอลต์'},
+ {q:'ซากดึกดำบรรพ์มีประโยชน์อย่างไร',o:['บอกสภาพแวดล้อมและสิ่งมีชีวิตในอดีต','ใช้เป็นเชื้อเพลิงได้ทุกชนิด','ทำให้ดินอุดมสมบูรณ์','ทำนายอากาศในอนาคต'],a:0,e:'ซากดึกดำบรรพ์ช่วยให้นักวิทยาศาสตร์รู้ว่าเคยมีสิ่งมีชีวิตใดและสภาพแวดล้อมเป็นอย่างไรในอดีต'},
+ {q:'ดาวเคราะห์ดวงใดอยู่ใกล้ดวงอาทิตย์ที่สุด',o:['ดาวพุธ','ดาวศุกร์','โลก','ดาวอังคาร'],a:0,e:'ลำดับจากดวงอาทิตย์คือ พุธ ศุกร์ โลก อังคาร พฤหัสบดี เสาร์ ยูเรนัส เนปจูน'},
+ {q:'ดาวเคราะห์ดวงใดมีขนาดใหญ่ที่สุดในระบบสุริยะ',o:['ดาวพฤหัสบดี','ดาวเสาร์','ดาวเนปจูน','โลก'],a:0,e:'ดาวพฤหัสบดีเป็นดาวเคราะห์แก๊สที่ใหญ่ที่สุด มีมวลมากกว่าดาวเคราะห์อื่นรวมกัน'},
+ {q:'เมื่อวางวัตถุใกล้แหล่งกำเนิดแสงมากขึ้น เงาบนฉากจะเป็นอย่างไร',o:['ใหญ่ขึ้น','เล็กลง','เท่าเดิม','หายไป'],a:0,e:'เมื่อวัตถุเข้าใกล้แหล่งกำเนิดแสง ลำแสงถูกบังเป็นมุมกว้างขึ้น เงาบนฉากจึงใหญ่ขึ้น'},
+ {q:'วิธีใดเหมาะกับการแยกผงเหล็กออกจากทราย',o:['ใช้แม่เหล็กดูด','การกรอง','การระเหยแห้ง','การรินออก'],a:0,e:'ผงเหล็กเป็นสารแม่เหล็ก ส่วนทรายไม่ใช่ จึงใช้แม่เหล็กดูดแยกออกได้'},
+ {q:'จะแยกเกลือออกจากน้ำเกลือได้ด้วยวิธีใด',o:['การระเหยแห้ง','การกรอง','การใช้แม่เหล็ก','การหยิบออก'],a:0,e:'ให้ความร้อนจนน้ำระเหยไปหมด เหลือผลึกเกลือไว้ในภาชนะ'},
+ {q:'ลมทะเลพัดในช่วงใดและพัดจากที่ใดไปที่ใด',o:['กลางวัน จากทะเลเข้าสู่ฝั่ง','กลางคืน จากทะเลเข้าสู่ฝั่ง','กลางวัน จากฝั่งออกสู่ทะเล','กลางคืน จากฝั่งออกสู่ทะเล'],a:0,e:'กลางวันพื้นดินร้อนเร็วกว่าน้ำ อากาศเหนือพื้นดินลอยสูงขึ้น อากาศเย็นจากทะเลจึงพัดเข้าแทนที่'},
+ {q:'ข้อใดคือสาเหตุของการเกิดฤดูกาลบนโลก',o:['แกนโลกเอียงขณะโคจรรอบดวงอาทิตย์','โลกหมุนรอบตัวเอง','ดวงจันทร์โคจรรอบโลก','ระยะห่างจากดวงอาทิตย์เปลี่ยนมาก'],a:0,e:'แกนโลกเอียงประมาณ 23.5 องศา ทำให้แต่ละซีกโลกได้รับแสงมากน้อยต่างกันในแต่ละช่วงปี'},
+ {q:'การหมุนรอบตัวเองของโลกทำให้เกิดสิ่งใด',o:['กลางวันและกลางคืน','ฤดูกาล','ข้างขึ้นข้างแรม','สุริยุปราคา'],a:0,e:'โลกหมุนรอบตัวเอง 1 รอบใช้เวลาประมาณ 24 ชั่วโมง ด้านที่หันรับแสงเป็นกลางวัน อีกด้านเป็นกลางคืน'},
+ {q:'ข้างขึ้นข้างแรมเกิดจากสิ่งใด',o:['ดวงจันทร์โคจรรอบโลกทำให้เห็นส่วนสว่างต่างกัน','ดวงจันทร์เปล่งแสงเองไม่เท่ากัน','เงาของโลกบังดวงจันทร์ทุกคืน','เมฆบังดวงจันทร์'],a:0,e:'ดวงจันทร์ไม่มีแสงในตัวเอง เมื่อโคจรรอบโลก มุมที่เรามองเห็นส่วนที่รับแสงจึงเปลี่ยนไปเรื่อย ๆ'},
+ {q:'อุปกรณ์ใดใช้สังเกตวัตถุท้องฟ้าที่อยู่ไกลมาก',o:['กล้องโทรทรรศน์','กล้องจุลทรรศน์','แว่นขยาย','เทอร์มอมิเตอร์'],a:0,e:'กล้องโทรทรรศน์รวมแสงจากวัตถุไกล ทำให้เห็นรายละเอียดของดาวได้ชัดขึ้น'},
+ {q:'ดาวเทียมชนิดใดใช้ถ่ายภาพพื้นผิวโลกเพื่อสำรวจทรัพยากร',o:['ดาวเทียมสำรวจทรัพยากร','ดาวเทียมสื่อสาร','ดาวเทียมอุตุนิยมวิทยา','ดาวเทียมนำทาง'],a:0,e:'ดาวเทียมสำรวจทรัพยากรบันทึกภาพพื้นผิวโลก ใช้ดูพื้นที่ป่า พื้นที่เกษตร และการใช้ที่ดิน'},
+ {q:'สารละลายต่างจากสารเนื้อผสมอย่างไร',o:['สารละลายมองเห็นเป็นเนื้อเดียวกัน','สารละลายแยกชั้นเสมอ','สารละลายกรองแยกได้ง่ายด้วยกระดาษกรอง','สารละลายมีเฉพาะของแข็ง'],a:0,e:'สารละลายเป็นสารเนื้อเดียว มองด้วยตาเปล่าไม่เห็นเนื้อสารที่แยกกัน จึงกรองด้วยกระดาษกรองไม่ได้'},
+ {q:'ถ้าออกแรงดึงกล่องไปทางขวา 40 นิวตัน และอีกคนดึงไปทางซ้าย 25 นิวตัน แรงลัพธ์เป็นเท่าใด',o:['15 นิวตัน ไปทางขวา','65 นิวตัน ไปทางขวา','15 นิวตัน ไปทางซ้าย','0 นิวตัน'],a:0,e:'แรงสวนทางกันให้นำมาลบกัน 40 − 25 = 15 นิวตัน และมีทิศไปทางแรงที่มากกว่า คือทางขวา'},
+ {q:'ข้อใดคือประโยชน์ของการรีไซเคิลขยะ',o:['ลดการใช้ทรัพยากรธรรมชาติใหม่','ทำให้ขยะเพิ่มขึ้น','ทำให้โลกร้อนขึ้น','ทำให้แหล่งน้ำเน่าเสีย'],a:0,e:'การนำวัสดุกลับมาใช้ใหม่ช่วยลดการขุดใช้ทรัพยากรและลดปริมาณขยะที่ต้องกำจัด'}
+];
+
+var SPEED=[
+ {q:'ดวงอาทิตย์เป็นดาวฤกษ์',o:['ใช่','ไม่ใช่'],a:0,e:'ดวงอาทิตย์มีแสงสว่างในตัวเอง จึงเป็นดาวฤกษ์'},
+ {q:'ดวงจันทร์มีแสงสว่างในตัวเอง',o:['ใช่','ไม่ใช่'],a:1,e:'ดวงจันทร์สะท้อนแสงจากดวงอาทิตย์เท่านั้น'},
+ {q:'ทองแดงเป็นตัวนำไฟฟ้า',o:['ใช่','ไม่ใช่'],a:0,e:'โลหะอย่างทองแดงยอมให้กระแสไฟฟ้าผ่านได้ดี'},
+ {q:'พลาสติกนำไฟฟ้าได้ดี',o:['ใช่','ไม่ใช่'],a:1,e:'พลาสติกเป็นฉนวนไฟฟ้า'},
+ {q:'หินอ่อนเป็นหินแปร',o:['ใช่','ไม่ใช่'],a:0,e:'หินอ่อนแปรสภาพมาจากหินปูนด้วยความร้อนและความดัน'},
+ {q:'ลำไส้ใหญ่ดูดซึมน้ำกลับเข้าสู่ร่างกาย',o:['ใช่','ไม่ใช่'],a:0,e:'ลำไส้ใหญ่ดูดซึมน้ำและเกลือแร่ ทำให้กากอาหารข้นขึ้น'},
+ {q:'เลือดที่ออกจากปอดกลับเข้าหัวใจมีออกซิเจนสูง',o:['ใช่','ไม่ใช่'],a:0,e:'เลือดฟอกที่ปอดแล้วจึงมีออกซิเจนสูงก่อนถูกส่งไปเลี้ยงร่างกาย'},
+ {q:'สุริยุปราคาเกิดตอนกลางคืน',o:['ใช่','ไม่ใช่'],a:1,e:'สุริยุปราคาเกิดเวลากลางวันเท่านั้น'},
+ {q:'แกนโลกเอียงประมาณ 23.5 องศา',o:['ใช่','ไม่ใช่'],a:0,e:'ความเอียงนี้ทำให้เกิดฤดูกาล'},
+ {q:'ดาวเคราะห์ทุกดวงมีวงแหวนชัดเจนเหมือนดาวเสาร์',o:['ใช่','ไม่ใช่'],a:1,e:'ดาวเสาร์มีวงแหวนเด่นชัดที่สุด ดวงอื่นมีบางและจางมาก'},
+ {q:'การกรองใช้แยกของแข็งที่ไม่ละลายออกจากของเหลว',o:['ใช่','ไม่ใช่'],a:0,e:'กระดาษกรองกั้นอนุภาคของแข็งไว้ ปล่อยของเหลวผ่าน'},
+ {q:'น้ำเชื่อมเป็นสารเนื้อผสม',o:['ใช่','ไม่ใช่'],a:1,e:'น้ำเชื่อมเป็นสารละลาย จัดเป็นสารเนื้อเดียว'},
+ {q:'ลมบกพัดในเวลากลางคืน',o:['ใช่','ไม่ใช่'],a:0,e:'กลางคืนพื้นดินเย็นเร็วกว่าน้ำ อากาศจึงพัดจากฝั่งออกสู่ทะเล'},
+ {q:'ไขมันให้พลังงานน้อยกว่าคาร์โบไฮเดรตต่อ 1 กรัม',o:['ใช่','ไม่ใช่'],a:1,e:'ไขมันให้พลังงานมากที่สุดคือประมาณ 9 กิโลแคลอรีต่อกรัม'},
+ {q:'ซากดึกดำบรรพ์มักพบในหินตะกอน',o:['ใช่','ไม่ใช่'],a:0,e:'ตะกอนทับถมกันทีละชั้นจึงเก็บรักษาซากไว้ได้ดี'},
+ {q:'วงจรไฟฟ้าอย่างง่ายต้องมีแหล่งกำเนิดไฟฟ้า',o:['ใช่','ไม่ใช่'],a:0,e:'ต้องมีแหล่งกำเนิดไฟฟ้า เครื่องใช้ไฟฟ้า และสายไฟต่อครบวงจร'},
+ {q:'เงามืดเกิดเมื่อแสงผ่านวัตถุโปร่งใส',o:['ใช่','ไม่ใช่'],a:1,e:'เงามืดเกิดจากวัตถุทึบแสงที่กั้นแสงไว้ทั้งหมด'},
+ {q:'ดาวเทียมอุตุนิยมวิทยาใช้ติดตามพายุและเมฆ',o:['ใช่','ไม่ใช่'],a:0,e:'ใช้บันทึกภาพเมฆและระบบอากาศเพื่อพยากรณ์อากาศ'}
+];
+
+var FORCE=[
+ {art:'⬅️🧍🧍➡️',q:'ทีมซ้ายออกแรง 120 นิวตัน ทีมขวาออกแรง 120 นิวตัน เชือกจะเป็นอย่างไร',o:['อยู่นิ่ง เพราะแรงลัพธ์เป็นศูนย์','เคลื่อนไปทางซ้าย','เคลื่อนไปทางขวา','ขาดทันที'],a:0,e:'แรงขนาดเท่ากันแต่ทิศตรงข้ามหักล้างกันพอดี แรงลัพธ์เป็น 0 วัตถุจึงอยู่นิ่ง'},
+ {art:'🧲➡️📦',q:'ดันกล่องไปทางขวา 60 นิวตัน มีแรงเสียดทานต้าน 20 นิวตัน แรงลัพธ์เท่าใด',o:['40 นิวตัน ไปทางขวา','80 นิวตัน ไปทางขวา','20 นิวตัน ไปทางซ้าย','0 นิวตัน'],a:0,e:'แรงเสียดทานมีทิศตรงข้ามการเคลื่อนที่ จึงนำมาลบ 60 − 20 = 40 นิวตัน ไปทางขวา'},
+ {art:'➡️➡️📦',q:'สองคนช่วยกันดันกล่องไปทางเดียวกัน คนละ 35 นิวตัน แรงลัพธ์เท่าใด',o:['70 นิวตัน ทิศเดียวกับที่ดัน','35 นิวตัน','0 นิวตัน','105 นิวตัน'],a:0,e:'แรงทิศเดียวกันให้นำมาบวกกัน 35 + 35 = 70 นิวตัน'},
+ {art:'🍎⬇️',q:'ผลไม้ร่วงจากต้นลงสู่พื้นเพราะแรงใด',o:['แรงโน้มถ่วงของโลก','แรงเสียดทาน','แรงแม่เหล็ก','แรงไฟฟ้า'],a:0,e:'โลกดึงดูดวัตถุทุกชิ้นเข้าหาศูนย์กลางโลก เรียกว่าแรงโน้มถ่วง'},
+ {art:'🎈💇',q:'ถูลูกโป่งกับผมแล้วลูกโป่งดูดเศษกระดาษได้เพราะแรงใด',o:['แรงไฟฟ้าจากประจุไฟฟ้า','แรงแม่เหล็ก','แรงโน้มถ่วง','แรงพยุง'],a:0,e:'การถูทำให้เกิดประจุไฟฟ้าบนลูกโป่ง ประจุต่างชนิดจึงดึงดูดเศษกระดาษ'},
+ {art:'⬅️80 📦 ➡️95',q:'แรงซ้าย 80 นิวตัน แรงขวา 95 นิวตัน กล่องเคลื่อนที่อย่างไร',o:['ไปทางขวา ด้วยแรงลัพธ์ 15 นิวตัน','ไปทางซ้าย ด้วยแรงลัพธ์ 15 นิวตัน','อยู่นิ่ง','ไปทางขวา ด้วยแรงลัพธ์ 175 นิวตัน'],a:0,e:'95 − 80 = 15 นิวตัน และเคลื่อนที่ไปตามทิศของแรงที่มากกว่า'}
+];
+
+var BREEZE=[
+ {art:'☀️🏖️',q:'เวลากลางวัน พื้นดินร้อนเร็วกว่าน้ำทะเล ลมจะพัดอย่างไร',o:['จากทะเลเข้าสู่ฝั่ง เรียกว่าลมทะเล','จากฝั่งออกสู่ทะเล เรียกว่าลมทะเล','จากทะเลเข้าสู่ฝั่ง เรียกว่าลมบก','ไม่มีลมพัด'],a:0,e:'อากาศเหนือพื้นดินร้อนกว่าจึงลอยตัวสูงขึ้น อากาศเย็นกว่าจากทะเลเคลื่อนเข้ามาแทนที่ เรียกว่าลมทะเล'},
+ {art:'🌙🏖️',q:'เวลากลางคืน พื้นดินเย็นเร็วกว่าน้ำทะเล ลมจะพัดอย่างไร',o:['จากฝั่งออกสู่ทะเล เรียกว่าลมบก','จากทะเลเข้าสู่ฝั่ง เรียกว่าลมบก','จากฝั่งออกสู่ทะเล เรียกว่าลมทะเล','ลมหยุดนิ่ง'],a:0,e:'กลางคืนน้ำทะเลยังอุ่นกว่า อากาศเหนือทะเลจึงลอยขึ้น อากาศจากฝั่งเคลื่อนออกไปแทนที่ เรียกว่าลมบก'},
+ {art:'🌡️💨',q:'อากาศร้อนมีสมบัติอย่างไรเมื่อเทียบกับอากาศเย็น',o:['เบากว่าและลอยตัวสูงขึ้น','หนักกว่าและจมลงต่ำ','หนักเท่ากันพอดี','ไม่เคลื่อนที่'],a:0,e:'อากาศร้อนขยายตัว ความหนาแน่นน้อยลง จึงลอยตัวสูงขึ้น และอากาศเย็นเคลื่อนเข้ามาแทน'},
+ {art:'🔥🌊',q:'เพราะเหตุใดน้ำทะเลจึงร้อนและเย็นช้ากว่าพื้นดิน',o:['น้ำต้องรับความร้อนมากกว่าจึงจะอุณหภูมิเปลี่ยน','น้ำสะท้อนแสงทั้งหมด','น้ำไม่รับความร้อนเลย','พื้นดินมีสีเข้มกว่าเสมอ'],a:0,e:'น้ำต้องการความร้อนมากกว่าดินในการทำให้อุณหภูมิเพิ่มเท่ากัน อุณหภูมิของน้ำจึงเปลี่ยนแปลงช้ากว่า'},
+ {art:'⛵🌬️',q:'ชาวประมงมักออกเรือตอนกลางคืนและกลับเข้าฝั่งตอนกลางวัน เพราะอะไร',o:['อาศัยลมบกพาออกทะเล และลมทะเลพากลับเข้าฝั่ง','เพราะกลางคืนปลาว่ายเร็วกว่า','เพราะกลางวันไม่มีลมเลย','เพราะน้ำทะเลเบากว่าในตอนกลางคืน'],a:0,e:'ลมบกพัดออกทะเลตอนกลางคืน ส่วนลมทะเลพัดเข้าฝั่งตอนกลางวัน ช่วยประหยัดแรงในการเดินเรือ'}
+];
+
+var GAMES=[
+ {id:'quiz',name:'ควิซจรวดความรู้',topic:'รวมทุกบท',ic:'🚀',lv:2,sub:'คำถามปรนัยสุ่ม 12 ข้อจากคลัง 22 ข้อ ครอบคลุมทุกบทของ ป.6',
+  hint:'อ่านโจทย์ให้จบก่อนเลือกคำตอบ ทุกข้อจะมีคำอธิบายเพิ่มเติมหลังตอบ',
+  run:function(c){quizEngine(c,this,QUIZ_MAIN,{limit:12});}},
+
+ {id:'mem',name:'จับคู่ระบบสุริยะ',topic:'ดาราศาสตร์',ic:'🪐',lv:1,sub:'พลิกการ์ดจับคู่ชื่อดาวกับลักษณะเด่นให้ครบ 8 คู่',
+  hint:'ระบบสุริยะมีดาวเคราะห์ 8 ดวง เรียงจากดวงอาทิตย์คือ พุธ ศุกร์ โลก อังคาร พฤหัสบดี เสาร์ ยูเรนัส เนปจูน',
+  run:function(c){memEngine(c,this,[
+   ['ดาวพุธ','เล็กที่สุดและใกล้ดวงอาทิตย์ที่สุด'],
+   ['ดาวศุกร์','ร้อนที่สุด มีเมฆกรดหนาทึบ'],
+   ['โลก','มีน้ำเป็นของเหลวและสิ่งมีชีวิต'],
+   ['ดาวอังคาร','พื้นผิวสีแดงจากสนิมเหล็ก'],
+   ['ดาวพฤหัสบดี','ใหญ่ที่สุด มีจุดแดงใหญ่'],
+   ['ดาวเสาร์','มีวงแหวนชัดเจนที่สุด'],
+   ['ดาวยูเรนัส','หมุนตะแคงข้างเกือบ 90 องศา'],
+   ['ดาวเนปจูน','ไกลที่สุดและมีลมแรงที่สุด']
+  ]);}},
+
+ {id:'order',name:'เรียงดาวเคราะห์',topic:'ดาราศาสตร์',ic:'🔭',lv:1,sub:'เรียงดาวเคราะห์ทั้ง 8 ดวงจากใกล้ดวงอาทิตย์ไปไกลที่สุด',
+  hint:'จำง่าย ๆ ว่า พุธ ศุกร์ โลก อังคาร แล้วตามด้วยดาวแก๊สยักษ์ พฤหัสบดี เสาร์ ยูเรนัส เนปจูน',
+  run:function(c){seqEngine(c,this,'เรียงลำดับดาวเคราะห์จาก <b>ใกล้ดวงอาทิตย์ที่สุด</b> ไป <b>ไกลที่สุด</b>',
+   ['ดาวพุธ','ดาวศุกร์','โลก','ดาวอังคาร','ดาวพฤหัสบดี','ดาวเสาร์','ดาวยูเรนัส','ดาวเนปจูน']);}},
+
+ {id:'circuit',name:'ห้องทดลองวงจรไฟฟ้า',topic:'ไฟฟ้า',ic:'⚡',lv:3,sub:'สลับวงจรอนุกรม–ขนาน ถอดหลอด เปิดปิดสวิตช์ ให้ผ่าน 4 ภารกิจ',
+  hint:'วงจรอนุกรมมีทางเดินไฟฟ้าทางเดียว ถ้าขาดจุดใดจุดหนึ่งไฟดับหมด ส่วนวงจรขนานมีหลายทาง หลอดแต่ละดวงจึงทำงานแยกกันได้',
+  run:function(c){circuitLab(c,this);}},
+
+ {id:'food',name:'แยกอาหาร 5 หมู่',topic:'สารอาหาร',ic:'🥗',lv:1,sub:'จัดอาหาร 15 ชนิดลงหมู่ที่ถูกต้อง',
+  hint:'หมู่ 1 โปรตีน / หมู่ 2 คาร์โบไฮเดรต / หมู่ 3 ผัก / หมู่ 4 ผลไม้ / หมู่ 5 ไขมัน',
+  run:function(c){sortEngine(c,this,
+   [{n:'หมู่ 1',d:'โปรตีน'},{n:'หมู่ 2',d:'คาร์โบไฮเดรต'},{n:'หมู่ 3',d:'ผัก'},{n:'หมู่ 4',d:'ผลไม้'},{n:'หมู่ 5',d:'ไขมัน'}],
+   [
+   {n:'ไข่ไก่',ic:'🥚',b:0,e:'ไข่เป็นแหล่งโปรตีนคุณภาพดี ช่วยเสริมสร้างและซ่อมแซมร่างกาย'},
+   {n:'เนื้อปลา',ic:'🐟',b:0,e:'ปลาให้โปรตีนย่อยง่ายและไขมันดี จัดอยู่ในหมู่ 1'},
+   {n:'เต้าหู้',ic:'🧈',b:0,e:'เต้าหู้ทำจากถั่วเหลือง จึงเป็นโปรตีนจากพืช'},
+   {n:'ข้าวสวย',ic:'🍚',b:1,e:'ข้าวให้คาร์โบไฮเดรต ซึ่งเป็นแหล่งพลังงานหลักของร่างกาย'},
+   {n:'ขนมปัง',ic:'🍞',b:1,e:'ทำจากแป้งสาลี จึงให้คาร์โบไฮเดรตเป็นหลัก'},
+   {n:'เผือก',ic:'🍠',b:1,e:'พืชหัวอย่างเผือกและมันสะสมแป้งไว้ จึงอยู่ในหมู่ 2'},
+   {n:'ผักคะน้า',ic:'🥬',b:2,e:'ผักให้วิตามิน เกลือแร่ และใยอาหาร ช่วยให้ขับถ่ายดี'},
+   {n:'แครอท',ic:'🥕',b:2,e:'แครอทมีวิตามินเอสูง ช่วยบำรุงสายตา'},
+   {n:'ฟักทอง',ic:'🎃',b:2,e:'จัดเป็นผักที่ให้วิตามินและใยอาหาร'},
+   {n:'กล้วย',ic:'🍌',b:3,e:'ผลไม้ให้วิตามิน เกลือแร่ และน้ำตาลธรรมชาติ'},
+   {n:'ส้ม',ic:'🍊',b:3,e:'ส้มมีวิตามินซีสูง ช่วยให้เหงือกและหลอดเลือดแข็งแรง'},
+   {n:'มะละกอสุก',ic:'🥭',b:3,e:'เป็นผลไม้ที่ให้วิตามินเอและใยอาหาร'},
+   {n:'น้ำมันพืช',ic:'🫒',b:4,e:'ไขมันให้พลังงานสูงและช่วยดูดซึมวิตามิน เอ ดี อี เค'},
+   {n:'เนย',ic:'🧈',b:4,e:'เนยเป็นไขมันจากสัตว์ ควรกินแต่พอควร'},
+   {n:'ถั่วลิสงคั่ว',ic:'🥜',b:4,e:'ถั่วลิสงมีไขมันสูงมาก จึงจัดอยู่ในหมู่ 5'}
+  ]);}},
+
+ {id:'digest',name:'เส้นทางระบบย่อยอาหาร',topic:'ร่างกายมนุษย์',ic:'🍽️',lv:2,sub:'เรียงอวัยวะตามเส้นทางที่อาหารเดินทางผ่าน',
+  hint:'อาหารเริ่มถูกย่อยที่ปากด้วยฟันและน้ำลาย แล้วผ่านหลอดอาหาร กระเพาะอาหาร ลำไส้เล็ก ลำไส้ใหญ่ ก่อนขับออก',
+  run:function(c){seqEngine(c,this,'เรียงอวัยวะตามลำดับที่อาหารเดินทางผ่าน',
+   ['ปาก','หลอดอาหาร','กระเพาะอาหาร','ลำไส้เล็ก','ลำไส้ใหญ่','ทวารหนัก']);}},
+
+ {id:'eclipse',name:'ห้องจำลองอุปราคา',topic:'ปรากฏการณ์ท้องฟ้า',ic:'🌘',lv:3,sub:'เลื่อนดวงจันทร์ให้เกิดสุริยุปราคาและจันทรุปราคา แล้วตอบคำถาม',
+  hint:'สุริยุปราคา: ดวงอาทิตย์ – ดวงจันทร์ – โลก / จันทรุปราคา: ดวงอาทิตย์ – โลก – ดวงจันทร์',
+  run:function(c){eclipseSim(c,this);}},
+
+ {id:'rock',name:'นักธรณีจำแนกหิน',topic:'หินและแร่',ic:'🪨',lv:2,sub:'จำแนกหิน 12 ชนิดเป็นหินอัคนี หินตะกอน หรือหินแปร',
+  hint:'หินอัคนีเกิดจากหินหนืดเย็นตัว หินตะกอนเกิดจากตะกอนทับถมอัดแน่น หินแปรเกิดจากหินเดิมถูกความร้อนและความดันสูง',
+  run:function(c){sortEngine(c,this,
+   [{n:'หินอัคนี',d:'หินหนืดเย็นตัว'},{n:'หินตะกอน',d:'ตะกอนทับถม'},{n:'หินแปร',d:'ถูกความร้อน–ความดัน'}],
+   [
+   {n:'หินแกรนิต',ic:'🪨',b:0,e:'เกิดจากแมกมาเย็นตัวช้าใต้เปลือกโลก จึงเห็นผลึกแร่ขนาดใหญ่'},
+   {n:'หินบะซอลต์',ic:'🌋',b:0,e:'เกิดจากลาวาเย็นตัวเร็วบนผิวโลก เนื้อละเอียดสีเข้ม'},
+   {n:'หินพัมมิซ',ic:'🫧',b:0,e:'หินภูเขาไฟที่มีรูพรุนมากจากแก๊สที่ถูกขัง จึงลอยน้ำได้'},
+   {n:'หินออบซิเดียน',ic:'⬛',b:0,e:'ลาวาเย็นตัวเร็วมากจนไม่เกิดผลึก มีลักษณะคล้ายแก้วสีดำ'},
+   {n:'หินทราย',ic:'🏜️',b:1,e:'เม็ดทรายทับถมและถูกอัดแน่นเชื่อมประสานกัน'},
+   {n:'หินดินดาน',ic:'📄',b:1,e:'เกิดจากดินเหนียวและโคลนละเอียดทับถมเป็นชั้นบาง'},
+   {n:'หินปูน',ic:'🐚',b:1,e:'เกิดจากการสะสมของซากเปลือกหอยและปะการัง จึงมักพบซากดึกดำบรรพ์'},
+   {n:'หินกรวดมน',ic:'🥚',b:1,e:'กรวดมนที่ถูกน้ำพัดพามาทับถมและเชื่อมกันด้วยเนื้อละเอียด'},
+   {n:'หินอ่อน',ic:'🏛️',b:2,e:'แปรสภาพมาจากหินปูน เนื้อผลึกละเอียด ขัดเงาได้สวย'},
+   {n:'หินชนวน',ic:'📐',b:2,e:'แปรสภาพมาจากหินดินดาน แยกเป็นแผ่นเรียบบางได้'},
+   {n:'หินไนส์',ic:'🌀',b:2,e:'แปรสภาพจากหินแกรนิต มีริ้วลายสีอ่อนสลับสีเข้ม'},
+   {n:'หินควอร์ตไซต์',ic:'💎',b:2,e:'แปรสภาพมาจากหินทราย เนื้อแน่นและแข็งมาก'}
+  ]);}},
+
+ {id:'shadow',name:'ห้องแสงและเงา',topic:'แสง',ic:'🔦',lv:3,sub:'เลื่อนวัตถุให้เงาบนฉากมีขนาดตรงตามเป้าหมาย 3 รอบ',
+  hint:'ความสูงของเงา = ความสูงวัตถุ × (ระยะฉาก ÷ ระยะวัตถุ) ยิ่งวัตถุใกล้แหล่งกำเนิดแสง เงายิ่งใหญ่',
+  run:function(c){shadowLab(c,this);}},
+
+ {id:'sep',name:'เลือกวิธีแยกสาร',topic:'สารและการแยกสาร',ic:'⚗️',lv:2,sub:'เลือกวิธีที่เหมาะสมที่สุดในการแยกสารผสม 10 แบบ',
+  hint:'วิธีแยกสารเนื้อผสมที่ใช้บ่อยคือ การหยิบออก การร่อน การใช้แม่เหล็กดูด การรินออก การกรอง การตกตะกอน และการระเหยแห้ง',
+  run:function(c){sortEngine(c,this,
+   [{n:'ใช้แม่เหล็ก'},{n:'การกรอง'},{n:'การระเหยแห้ง'},{n:'การร่อน'},{n:'การรินออก'}],
+   [
+   {n:'ผงเหล็กปนกับทราย',ic:'🧲',b:0,e:'ผงเหล็กถูกแม่เหล็กดูด ส่วนทรายไม่ถูกดูด จึงแยกออกจากกันได้'},
+   {n:'คลิปหนีบกระดาษปนกับเมล็ดถั่ว',ic:'📎',b:0,e:'คลิปทำจากเหล็ก จึงใช้แม่เหล็กดูดแยกออกได้เร็วกว่าหยิบทีละชิ้น'},
+   {n:'ทรายปนอยู่ในน้ำ',ic:'🏖️',b:1,e:'ทรายไม่ละลายน้ำ กระดาษกรองจะกั้นทรายไว้และปล่อยน้ำผ่าน'},
+   {n:'กากชาในน้ำชา',ic:'🍵',b:1,e:'ใช้ที่กรองกั้นกากชาไว้ ได้น้ำชาใสออกมา'},
+   {n:'เกลือละลายอยู่ในน้ำ',ic:'🧂',b:2,e:'ให้ความร้อนจนน้ำระเหยหมด จะเหลือผลึกเกลือไว้'},
+   {n:'น้ำตาลในน้ำเชื่อม',ic:'🍯',b:2,e:'น้ำตาลละลายอยู่จึงกรองไม่ได้ ต้องระเหยน้ำออกจนเหลือน้ำตาล'},
+   {n:'ทรายหยาบปนทรายละเอียด',ic:'⌛',b:3,e:'ใช้ตะแกรงที่มีรูขนาดพอเหมาะร่อน ทรายละเอียดจะลอดรูลงไป'},
+   {n:'ข้าวสารปนกับแกลบชิ้นเล็ก',ic:'🌾',b:3,e:'ขนาดอนุภาคต่างกัน จึงใช้ตะแกรงร่อนแยกได้'},
+   {n:'น้ำใสอยู่เหนือตะกอนดินที่นอนก้น',ic:'🥛',b:4,e:'เมื่อตะกอนนอนก้นแล้ว ค่อย ๆ รินน้ำใสส่วนบนออกจากภาชนะ'},
+   {n:'น้ำมันลอยอยู่เหนือน้ำ',ic:'🫗',b:4,e:'น้ำมันกับน้ำแยกชั้นกัน จึงรินชั้นบนออกได้'}
+  ]);}},
+
+ {id:'breeze',name:'ลมบก–ลมทะเล',topic:'ลมฟ้าอากาศ',ic:'🌊',lv:2,sub:'ตอบสถานการณ์เรื่องการเกิดลมประจำถิ่น 5 ข้อ',
+  hint:'พื้นดินร้อนเร็วและเย็นเร็วกว่าน้ำ ลมจะพัดจากบริเวณที่อากาศเย็นกว่าเข้าหาบริเวณที่อากาศร้อนกว่าเสมอ',
+  run:function(c){quizEngine(c,this,BREEZE);}},
+
+ {id:'speed',name:'ตอบเร็วทันใจ',topic:'รวมทุกบท',ic:'⏱️',lv:3,sub:'ใช่หรือไม่ใช่ ตอบให้ได้มากที่สุดภายใน 60 วินาที',
+  hint:'อ่านเร็วแต่คิดให้รอบคอบ ทุกข้อมาจากเนื้อหา ป.6 ที่เคยเรียนมาแล้ว',
+  run:function(c){quizEngine(c,this,SPEED,{seconds:60});}},
+
+ {id:'blood',name:'วงจรเลือดในร่างกาย',topic:'ร่างกายมนุษย์',ic:'❤️',lv:3,sub:'เรียงเส้นทางการไหลเวียนเลือดจากหัวใจกลับสู่หัวใจ',
+  hint:'เลือดที่มีออกซิเจนต่ำจะถูกส่งไปฟอกที่ปอดก่อน แล้วจึงกลับเข้าหัวใจเพื่อส่งไปเลี้ยงทั่วร่างกาย',
+  run:function(c){seqEngine(c,this,'เริ่มจากเลือดออกซิเจนต่ำในหัวใจห้องล่างขวา เรียงเส้นทางให้ครบวง',
+   ['หัวใจห้องล่างขวา','ปอด (ฟอกเลือด)','หัวใจห้องบนซ้าย','หัวใจห้องล่างซ้าย','เซลล์ทั่วร่างกาย','หัวใจห้องบนขวา']);}},
+
+ {id:'force',name:'สถานีวัดแรงลัพธ์',topic:'แรงและการเคลื่อนที่',ic:'🧲',lv:2,sub:'คำนวณแรงลัพธ์และบอกทิศทางการเคลื่อนที่ 6 สถานการณ์',
+  hint:'แรงทิศเดียวกันให้บวกกัน แรงทิศตรงข้ามให้ลบกัน แล้วตอบทิศตามแรงที่มากกว่า ถ้าเท่ากันแรงลัพธ์เป็นศูนย์',
+  run:function(c){quizEngine(c,this,FORCE);}},
+
+ {id:'fossil',name:'อ่านชั้นหินและซากดึกดำบรรพ์',topic:'ธรณีวิทยา',ic:'🦴',lv:2,sub:'เรียงชั้นหินจากชั้นที่เกิดก่อนไปชั้นที่เกิดทีหลัง',
+  hint:'ในชั้นหินตะกอนที่ไม่ถูกรบกวน ชั้นล่างสุดจะสะสมตัวก่อน จึงมีอายุมากที่สุด ส่วนชั้นบนสุดเกิดทีหลังและอายุน้อยที่สุด',
+  run:function(c){seqEngine(c,this,'เรียงชั้นหินจาก <b>เกิดก่อน (อายุมากที่สุด)</b> ไป <b>เกิดทีหลัง (อายุน้อยที่สุด)</b>',
+   ['ชั้นล่างสุด: หินทรายมีซากไทรโลไบต์','ชั้นที่ 4: หินปูนมีซากปะการังโบราณ','ชั้นที่ 3: หินดินดานมีซากใบเฟิร์น','ชั้นที่ 2: หินทรายมีรอยเท้าไดโนเสาร์','ชั้นบนสุด: ชั้นตะกอนมีเปลือกหอยปัจจุบัน']);}}
+];
+
+/* ================= knowledge ================= */
+var KNOW=[
+ ['🥗 สารอาหารและระบบย่อยอาหาร',
+  '<p>อาหารหลัก 5 หมู่ ได้แก่ โปรตีน คาร์โบไฮเดรต ผัก ผลไม้ และไขมัน ร่างกายต้องได้รับครบและในสัดส่วนที่เหมาะสม</p><ul><li><b>คาร์โบไฮเดรต</b> ให้พลังงานหลัก ประมาณ 4 กิโลแคลอรีต่อกรัม</li><li><b>โปรตีน</b> สร้างและซ่อมแซมเนื้อเยื่อ ให้ประมาณ 4 กิโลแคลอรีต่อกรัม</li><li><b>ไขมัน</b> ให้พลังงานสูงสุด ประมาณ 9 กิโลแคลอรีต่อกรัม และช่วยดูดซึมวิตามิน เอ ดี อี เค</li><li><b>วิตามินและเกลือแร่</b> ไม่ให้พลังงาน แต่ช่วยให้ร่างกายทำงานเป็นปกติ</li></ul><p>เส้นทางเดินอาหาร: ปาก → หลอดอาหาร → กระเพาะอาหาร → ลำไส้เล็ก → ลำไส้ใหญ่ → ทวารหนัก โดยสารอาหารถูกดูดซึมมากที่สุดที่ลำไส้เล็ก</p>'],
+ ['❤️ ระบบไหลเวียนเลือด',
+  '<p>หัวใจมี 4 ห้อง ทำหน้าที่สูบฉีดเลือดไปทั่วร่างกาย</p><ul><li>เลือดออกซิเจนต่ำจาก <b>ห้องล่างขวา</b> ถูกส่งไปฟอกที่ <b>ปอด</b></li><li>เลือดออกซิเจนสูงกลับเข้า <b>ห้องบนซ้าย</b> ลงสู่ <b>ห้องล่างซ้าย</b> แล้วส่งไปเลี้ยงทั่วร่างกาย</li><li>เลือดที่ใช้แล้วกลับเข้า <b>ห้องบนขวา</b> ครบหนึ่งรอบ</li></ul><p>หลอดเลือดมี 3 ชนิด คือ หลอดเลือดแดงนำเลือดออกจากหัวใจ หลอดเลือดดำนำเลือดกลับเข้าหัวใจ และหลอดเลือดฝอยที่เชื่อมทั้งสองและแลกเปลี่ยนสารกับเซลล์</p>'],
+ ['⚡ วงจรไฟฟ้าอย่างง่าย',
+  '<p>วงจรไฟฟ้าอย่างง่ายต้องมี 3 ส่วนคือ แหล่งกำเนิดไฟฟ้า เครื่องใช้ไฟฟ้า และสายไฟที่ต่อครบวงจร</p><ul><li><b>ต่อแบบอนุกรม</b> กระแสไฟฟ้าไหลทางเดียว ถ้าหลอดใดขาด ไฟดับทั้งวงจร และยิ่งต่อหลอดมาก ไฟยิ่งสว่างน้อยลง</li><li><b>ต่อแบบขนาน</b> กระแสไฟฟ้าแยกเป็นหลายทาง หลอดแต่ละดวงทำงานแยกกัน ถอดดวงหนึ่งออกดวงอื่นยังสว่าง จึงใช้ในบ้านเรือน</li><li><b>ตัวนำไฟฟ้า</b> เช่น ทองแดง เหล็ก อะลูมิเนียม <b>ฉนวนไฟฟ้า</b> เช่น ยาง พลาสติก ไม้แห้ง</li></ul>'],
+ ['⚗️ สารและการแยกสาร',
+  '<p>สารเนื้อเดียวมองเห็นกลมกลืนเป็นเนื้อเดียวกัน เช่น น้ำเกลือ น้ำเชื่อม ส่วนสารเนื้อผสมมองเห็นเนื้อสารแยกกัน เช่น น้ำโคลน ข้าวผัด</p><ul><li><b>การหยิบออก</b> ใช้เมื่ออนุภาคใหญ่พอมองเห็นและหยิบได้</li><li><b>การร่อน</b> ใช้เมื่ออนุภาคมีขนาดต่างกัน</li><li><b>การใช้แม่เหล็กดูด</b> ใช้เมื่อมีสารแม่เหล็กปนอยู่</li><li><b>การรินออก</b> ใช้เมื่อสารแยกชั้นกันหรือมีตะกอนนอนก้นแล้ว</li><li><b>การกรอง</b> ใช้แยกของแข็งที่ไม่ละลายออกจากของเหลว</li><li><b>การระเหยแห้ง</b> ใช้แยกของแข็งที่ละลายอยู่ในของเหลว</li></ul>'],
+ ['🪨 หิน แร่ และซากดึกดำบรรพ์',
+  '<p>หินแบ่งตามการเกิดได้ 3 ประเภท</p><ul><li><b>หินอัคนี</b> เกิดจากหินหนืดเย็นตัวและแข็งตัว เช่น หินแกรนิต หินบะซอลต์ หินพัมมิซ</li><li><b>หินตะกอน</b> เกิดจากตะกอนทับถมและอัดแน่น เช่น หินทราย หินดินดาน หินปูน มักพบซากดึกดำบรรพ์ในหินประเภทนี้</li><li><b>หินแปร</b> เกิดจากหินเดิมถูกความร้อนและความดันสูง เช่น หินอ่อน (จากหินปูน) หินชนวน (จากหินดินดาน) หินไนส์ (จากหินแกรนิต)</li></ul><p>ในชั้นหินที่ไม่ถูกรบกวน ชั้นล่างสุดมีอายุมากที่สุด ชั้นบนสุดมีอายุน้อยที่สุด</p>'],
+ ['🔦 แสงและเงา',
+  '<p>แสงเดินทางเป็นเส้นตรง เมื่อมีวัตถุทึบแสงมาขวางกั้นจะเกิดเงาขึ้นด้านหลังวัตถุ</p><ul><li><b>เงามืด</b> เกิดตรงบริเวณที่ไม่มีแสงส่องถึงเลย</li><li><b>เงามัว</b> เกิดบริเวณรอบเงามืดที่มีแสงบางส่วนส่องถึง</li><li>ยิ่งวัตถุอยู่ใกล้แหล่งกำเนิดแสง เงาบนฉากยิ่งมีขนาดใหญ่ขึ้น</li></ul><p>ความสูงของเงา = ความสูงวัตถุ × (ระยะจากแหล่งกำเนิดแสงถึงฉาก ÷ ระยะจากแหล่งกำเนิดแสงถึงวัตถุ)</p>'],
+ ['🌘 ปรากฏการณ์ของโลกและอวกาศ',
+  '<p>การเคลื่อนที่ของโลกทำให้เกิดปรากฏการณ์หลายอย่าง</p><ul><li><b>โลกหมุนรอบตัวเอง</b> ประมาณ 24 ชั่วโมง ทำให้เกิดกลางวันและกลางคืน</li><li><b>โลกโคจรรอบดวงอาทิตย์</b> ประมาณ 365 วัน ประกอบกับแกนโลกเอียง 23.5 องศา จึงเกิดฤดูกาล</li><li><b>ข้างขึ้นข้างแรม</b> เกิดจากดวงจันทร์โคจรรอบโลก ทำให้เห็นส่วนที่รับแสงต่างกัน</li><li><b>สุริยุปราคา</b> เรียงกันเป็น ดวงอาทิตย์ – ดวงจันทร์ – โลก เกิดในเวลากลางวัน</li><li><b>จันทรุปราคา</b> เรียงกันเป็น ดวงอาทิตย์ – โลก – ดวงจันทร์ เกิดในคืนจันทร์เพ็ญ</li></ul>'],
+ ['🚀 ระบบสุริยะและเทคโนโลยีอวกาศ',
+  '<p>ระบบสุริยะมีดวงอาทิตย์เป็นศูนย์กลาง และมีดาวเคราะห์ 8 ดวงเรียงจากใกล้ไปไกล ได้แก่ ดาวพุธ ดาวศุกร์ โลก ดาวอังคาร ดาวพฤหัสบดี ดาวเสาร์ ดาวยูเรนัส และดาวเนปจูน</p><ul><li>ดาวเคราะห์ 4 ดวงแรกเป็นดาวเคราะห์หิน ส่วน 4 ดวงหลังเป็นดาวเคราะห์แก๊สและน้ำแข็งขนาดใหญ่</li><li><b>กล้องโทรทรรศน์</b> ใช้รวมแสงเพื่อสังเกตวัตถุท้องฟ้าที่อยู่ไกล</li><li><b>ดาวเทียม</b> มีหลายชนิด เช่น ดาวเทียมสื่อสาร ดาวเทียมอุตุนิยมวิทยา ดาวเทียมสำรวจทรัพยากร และดาวเทียมนำทาง</li><li><b>ยานอวกาศและสถานีอวกาศ</b> ใช้สำรวจและทดลองทางวิทยาศาสตร์นอกโลก</li></ul>']
+];
+
+/* ================= build UI ================= */
+(function(){
+  var grid=document.getElementById('gameGrid');
+  GAMES.forEach(function(g,i){
+    var card=el('button','card');
+    card.dataset.id=g.id;
+    var pips='';for(var k=1;k<=3;k++)pips+='<span class="pip'+(k<=g.lv?' on':'')+'"></span>';
+    card.innerHTML='<div class="num">ภารกิจ '+String(i+1).padStart(2,'0')+'</div>'+
+      '<div class="ic">'+g.ic+'</div><h3>'+g.name+'</h3><div class="sub">'+g.sub+'</div>'+
+      '<div class="foot"><span>'+g.topic+'</span><span class="pips">'+pips+'</span><span class="badge">ยังไม่เล่น</span></div>';
+    card.onclick=function(){openPanel(g);};
+    grid.appendChild(card);
+  });
+  var kl=document.getElementById('knowList');
+  KNOW.forEach(function(k){
+    var d=el('details','kn');
+    d.innerHTML='<summary>'+k[0]+'</summary><div class="body">'+k[1]+'</div>';
+    kl.appendChild(d);
+  });
+  document.getElementById('resetBtn').onclick=function(){
+    if(!confirm('ล้างแต้มและภารกิจที่ผ่านทั้งหมดใช่หรือไม่'))return;
+    S={xp:0,done:{},stars:0};save();
+    document.querySelectorAll('.card').forEach(function(el2){el2.classList.remove('done');el2.querySelector('.badge').textContent='ยังไม่เล่น';});
+    paint();
+  };
+  paint();
+})();
+</script>
+</body>
+</html>
